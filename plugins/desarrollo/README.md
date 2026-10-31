@@ -1,23 +1,32 @@
 # Departamento de desarrollo
 
-Aquí va el plugin `becarios` de desarrollo. Tiene nueve becarios: `cto`, `diseno`, `frontend`, `backend-datos`, `backend-servicios`, `ia-automatizacion`, `qa-funcional`, `qa-tecnico` y `delivery`.
+El plugin `desarrollo` lleva cada tarea de Notion del plan al PR. Tiene nueve becarios:
 
-Ya están aquí los dos nuevos: `agents/diseno.md` (Diseño UX/UI) y `agents/ia-automatizacion.md` (IA y automatizaciones). Los otros siete están solo en el ordenador de Pablo: súbelos a `agents/`, junto a estos, para que la oficina en la nube los use.
-
-Lo que tiene que quedar:
+| Becario | Qué hace |
+| --- | --- |
+| `cto` | Historia, plan técnico, reparto y revisión del PR. Toda tarea de desarrollo entra por él. |
+| `diseno` | Diseño UX/UI: recorridos, pantallas, estados, textos y accesibilidad antes de programar. |
+| `frontend` | Interfaces, responsive e integración con la API. |
+| `backend-datos` | Modelos, migraciones (solo como ficheros), consultas y permisos (RLS). |
+| `backend-servicios` | Lógica de negocio, endpoints, funciones e integraciones. |
+| `ia-automatizacion` | Chatbots e integraciones con Claude, automatizaciones, WhatsApp y webhooks. |
+| `qa-funcional` | Criterios de aceptación y recorridos de usuario en la preview, en móvil y escritorio. |
+| `qa-tecnico` | Build, lint y tipos; pruebas de integración, API y regresión; consola de la preview. |
+| `delivery` | PR, preview de Vercel (la DEMO), versión y registro de entrega en Notion. |
 
 ```
 plugins/desarrollo/
-├── .claude-plugin/plugin.json      # name: "desarrollo"
-├── agents/                         # cto.md, frontend.md, backend-datos.md, …
-├── skills/becarios/SKILL.md        # el coordinador del flujo
-└── reference/                      # proceso.md, notion.md, …
+├── .claude-plugin/plugin.json
+├── agents/              # los nueve becarios
+├── skills/becarios/     # /desarrollo:becarios, el coordinador
+└── reference/           # proceso.md (fases y reglas) y notion.md (bases y ficha del becario)
 ```
 
-Después, añade el plugin a `.claude-plugin/marketplace.json` (en la raíz):
+## Cómo trabaja
 
-```json
-{ "name": "desarrollo", "source": "./plugins/desarrollo", "description": "Departamento de desarrollo: cto, diseño UX/UI, frontend, backend, IA y automatizaciones, QA funcional y técnico, y delivery." }
-```
+Preparación (`cto`, y `diseno` si hay interfaz) → Desarrollo y unitarias (`frontend`, `backend-datos`, `backend-servicios`, `ia-automatizacion`) → Despliegue DEMO (`delivery`: PR en borrador y preview) → QA DEMO (`qa-funcional` ∥ `qa-tecnico`) → PR y revisión (revisión del `cto` y PR listo) → y, solo si una persona lo confirma después de fusionar, Despliegue PROD → QA PROD → Cerrada.
 
-Mientras no esté, el skill `encargo` usa un flujo mínimo para las tareas de desarrollo (CTO → diseño si hay interfaz → frontend, backend e IA → QA en la preview → revisión del CTO → PR). Cuando esté, sigue `skills/becarios/SKILL.md`, pero se para en el PR: en la nube no se despliega a producción.
+- En tu ordenador: `/desarrollo:becarios <URL de la tarea>` (o sin nada, para coger la siguiente del CTO). Pregunta antes de abrir el PR y antes de cualquier cosa en producción.
+- En la nube: la lanza el panel y la ejecuta el skill `encargo` de la oficina, que sigue este mismo flujo pero **se para en el PR**.
+
+Los detalles están en [`reference/proceso.md`](reference/proceso.md) y [`reference/notion.md`](reference/notion.md).

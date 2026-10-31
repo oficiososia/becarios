@@ -1,0 +1,8 @@
+{
+  "name": "producto",
+  "version": "0.1.0",
+  "description": "Equipo de producto de OficiosOsIA: Product Owner, Project Manager y CTO de producto. Contesta el chat del panel y convierte las peticiones de Notion en tareas con historia, criterios, planificación, departamento y plan técnico.",
+  "author": { "name": "OficiosOsIA" },
+  "repository": "https://github.com/oficiososia/becarios",
+  "keywords": ["producto", "historias", "notion", "planificacion"]
+}

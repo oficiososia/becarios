@@ -94,17 +94,20 @@ Cada vez que cambies de fase, actualiza `Fase` y `Becario` (quién la tiene ahor
 
 ### Desarrollo (`entrada: cto`)
 
-Si existe `~/becarios/plugins/desarrollo/skills/becarios/SKILL.md`, síguelo, pero **para en el PR**: nada de «Despliegue PROD» ni «QA PROD».
+Sigue el flujo de `~/becarios/plugins/desarrollo/skills/becarios/SKILL.md` (y su `reference/proceso.md`), con dos diferencias porque en la nube no hay nadie delante:
 
-Si no existe, este es el flujo mínimo:
+- **No preguntas**: donde el skill pregunta («¿Sigo con este plan?», «¿Paso el PR a listo?»), sigues adelante con lo que proponga el `cto`.
+- **Paras en el PR**: nada de «Despliegue PROD», «QA PROD» ni «Cerrada»; la tarea acaba en «PR y revisión» (punto 7).
 
-1. **Preparación** · `cto`. Si no hay fichero de agente, lánzalo como propósito general con el papel «CTO: historia, plan técnico, reparto y revisión del PR». Devuelve el plan técnico, qué becarios intervienen y en qué orden, y qué hay que probar.
+En resumen:
+
+1. **Preparación** · `cto` devuelve el plan técnico, qué becarios intervienen y en qué orden, y qué hay que probar.
    - Si la tarea toca la interfaz, después del plan va `diseno` (sigue en Preparación): recorrido, pantallas, estados y especificación para frontend en `docs/diseno/`.
 2. **Desarrollo y unitarias** · `frontend`, `backend-datos`, `backend-servicios` e `ia-automatizacion` (chatbots, integraciones con Claude, automatizaciones, WhatsApp y webhooks), los que estén en `equipo` y pida el plan. Cada uno con sus pruebas unitarias. Las migraciones de base de datos, solo como ficheros (por ejemplo, `supabase/migrations/`).
-3. Comprueba que el build y las pruebas pasan (`npm run build`, `npm test` o lo que diga el repo). Haz push de la rama y abre el PR como **borrador** para que Vercel cree la preview.
-4. **QA DEMO** · `qa-funcional` y `qa-tecnico` (los que estén en `equipo`) contra la URL de la preview (ver punto 6).
+3. **Despliegue DEMO** · comprueba que el build y las pruebas pasan (`npm run build`, `npm test` o lo que diga el repo). `delivery` hace push de la rama, abre el PR como **borrador** para que Vercel cree la preview, la espera (ver «6. Credenciales de Vercel y Supabase») y apunta `Versión`.
+4. **QA DEMO** · `qa-funcional` y `qa-tecnico` (los que estén en `equipo`), en paralelo, contra la URL de la preview.
 5. **Revisión** · `cto` revisa el diff (`git diff origin/<rama por defecto>...HEAD`) y los informes de QA. Lo que pida cambiar vuelve a quien toque.
-6. **PR y revisión** · pasa el PR a listo para revisar.
+6. **PR y revisión** · `delivery` pasa el PR a listo para revisar, apunta `PR` y crea el registro de entrega.
 
 ### Marketing (`entrada: mk-lead`)
 
@@ -145,7 +148,11 @@ Todas son opcionales: si no están, trabaja sin ellas y dilo en el informe. **Nu
 
 ## 7. PR y cierre en Notion
 
-1. Push de la rama y PR contra la rama por defecto (con `gh pr create` o las herramientas de GitHub de la sesión). Uno por encargo; si ya abriste el borrador, ese mismo.
+1. Push de la rama y PR contra la rama por defecto. Uno por encargo; si ya abriste el borrador, ese mismo.
+   - **En la nube, con la API REST de GitHub**, no con `gh pr create` ni `gh pr ready`: esos comandos usan GraphQL y el proxy de GitHub de la sesión lo bloquea. Esto manda aunque otro skill diga `gh pr create`. Usa las herramientas de GitHub de la sesión o `gh api`:
+     - crear: `gh api repos/<propietario>/<repo>/pulls -f title='…' -f head='<rama>' -f base='<rama por defecto>' -f body="$(cat cuerpo.md)" -F draft=true` (o `false` si ya está listo);
+     - pasar de borrador a listo: `gh api -X POST repos/<propietario>/<repo>/pulls/<número>/ccr/ready_for_review`;
+     - cambiar el cuerpo: `gh api -X PATCH repos/<propietario>/<repo>/pulls/<número> -f body="$(cat cuerpo.md)"`.
    - Título: `[<Departamento>] <titulo>` (`[Desarrollo]`, `[Marketing]`, `[Soporte IT]` o `[Ciberseguridad]`).
    - Cuerpo:
      - **Resumen** en tres líneas.

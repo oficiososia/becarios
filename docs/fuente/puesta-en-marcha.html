@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Becarios de OficiosOsIA · Puesta en marcha desde cero</title>
+<style>
+  @page { size: A4; margin: 18mm 17mm 20mm 17mm; }
+  :root { --ambar: #ffb000; --ambar-oscuro: #b37a00; --tinta: #18191b; --gris: #5b5d63; --linea: #d9d6cf; --fondo: #f6f3ec; --verde: #2e7d4f; --rojo: #b3261e; --azul: #2c5f8a; }
+  * { box-sizing: border-box; }
+  html { font-family: 'Inter', 'Liberation Sans', sans-serif; font-size: 10.2pt; color: var(--tinta); line-height: 1.55; }
+  body { margin: 0; }
+  h1, h2, h3 { font-family: 'Inter Display', 'Inter', sans-serif; line-height: 1.2; letter-spacing: -0.01em; }
+  h2 { font-size: 20pt; margin: 0 0 4mm; padding-top: 2mm; break-after: avoid; }
+  h2 .num { display: inline-block; min-width: 11mm; height: 11mm; line-height: 11mm; text-align: center; background: var(--tinta); color: var(--ambar); border-radius: 2mm; margin-right: 3mm; font-size: 15pt; vertical-align: 1mm; }
+  h3 { font-size: 13pt; margin: 6mm 0 2mm; break-after: avoid; }
+  p { margin: 0 0 2.5mm; }
+  a { color: var(--azul); }
+  code, .mono { font-family: 'JetBrains Mono', 'DejaVu Sans Mono', monospace; font-size: 0.88em; background: #efece4; padding: 0.2mm 1.2mm; border-radius: 1mm; word-break: break-word; }
+  pre { font-family: 'JetBrains Mono', monospace; font-size: 8.8pt; background: var(--tinta); color: #f2efe8; padding: 3mm 4mm; border-radius: 2mm; margin: 2mm 0 3mm; white-space: pre-wrap; word-break: break-word; break-inside: avoid; }
+  pre .com { color: #9a978f; }
+  .capitulo { margin-top: 9mm; }
+  .salto { break-before: page; margin-top: 0; }
+  .portada { height: 255mm; display: flex; flex-direction: column; justify-content: space-between; padding: 6mm 2mm 0; }
+  .marca { display: flex; align-items: center; gap: 3mm; font-family: 'Inter Display'; font-weight: 700; font-size: 16pt; }
+  .marca .ia { color: var(--ambar-oscuro); }
+  .portada h1 { font-size: 34pt; margin: 0 0 4mm; }
+  .portada .sub { font-size: 14pt; color: var(--gris); max-width: 150mm; }
+  .portada .bloque { background: var(--tinta); color: #f2efe8; border-radius: 3mm; padding: 7mm 8mm; }
+  .portada .bloque strong { color: var(--ambar); }
+  .portada .bloque ul { margin: 2mm 0 0; padding-left: 5mm; }
+  .portada .pie { color: var(--gris); font-size: 9.5pt; border-top: 1px solid var(--linea); padding-top: 3mm; }
+  ol.pasos { counter-reset: paso; list-style: none; padding: 0; margin: 2mm 0 4mm; }
+  ol.pasos > li { counter-increment: paso; position: relative; padding: 0 0 0 10mm; margin: 0 0 3mm; break-inside: avoid; }
+  ol.pasos > li::before { content: counter(paso); position: absolute; left: 0; top: 0.2mm; width: 6.5mm; height: 6.5mm; border-radius: 50%; background: var(--ambar); color: var(--tinta); font-weight: 700; font-size: 9pt; line-height: 6.5mm; text-align: center; }
+  ol.pasos ul { margin: 1mm 0 0; padding-left: 5mm; }
+  ul { padding-left: 5mm; margin: 1mm 0 3mm; }
+  li { margin-bottom: 1mm; }
+  .caja { border-radius: 2mm; padding: 3mm 4mm 3mm 11mm; margin: 3mm 0 4mm; position: relative; break-inside: avoid; }
+  .caja::before { position: absolute; left: 3.5mm; top: 2.6mm; font-weight: 700; font-size: 11pt; }
+  .caja p:last-child, .caja ul:last-child { margin-bottom: 0; }
+  .aviso { background: #fff4d6; border: 1px solid #f0c860; }
+  .aviso::before { content: "!"; color: var(--ambar-oscuro); }
+  .ok { background: #e7f4ec; border: 1px solid #a9d6b9; }
+  .ok::before { content: "✓"; color: var(--verde); }
+  .peligro { background: #fbe9e7; border: 1px solid #eab3ad; }
+  .peligro::before { content: "✕"; color: var(--rojo); }
+  .info { background: #eaf1f8; border: 1px solid #b7cce0; }
+  .info::before { content: "i"; color: var(--azul); font-family: 'Inter Display'; }
+  figure { margin: 3mm 0 5mm; break-inside: avoid; }
+  figure img { max-width: 100%; max-height: 100mm; width: auto; margin: 0 auto; border: 1px solid var(--linea); border-radius: 2mm; display: block; }
+  figcaption { font-size: 8.8pt; color: var(--gris); margin-top: 1.5mm; }
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 9.4pt; break-inside: auto; }
+  th, td { text-align: left; vertical-align: top; padding: 1.8mm 2.4mm; border-bottom: 1px solid var(--linea); }
+  th { background: var(--fondo); font-weight: 600; }
+  tr { break-inside: avoid; }
+  .check td:first-child { width: 7mm; }
+  .cuadro { display: inline-block; width: 4mm; height: 4mm; border: 1.4px solid var(--tinta); border-radius: 0.6mm; vertical-align: -0.6mm; }
+  .flujo { display: flex; align-items: stretch; gap: 2mm; margin: 4mm 0 5mm; }
+  .flujo div { flex: 1; background: var(--fondo); border: 1px solid var(--linea); border-radius: 2mm; padding: 2.5mm; font-size: 8.8pt; text-align: center; }
+  .flujo div strong { display: block; font-size: 9.6pt; margin-bottom: 1mm; }
+  .flujo .flecha { flex: 0 0 4mm; background: none; border: 0; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 12pt; color: var(--ambar-oscuro); }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .etq { display: inline-block; font-size: 8pt; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.4mm 2mm; border-radius: 1mm; background: var(--tinta); color: var(--ambar); vertical-align: 0.4mm; }
+  .tiempo { color: var(--gris); font-size: 9.5pt; margin: -2mm 0 4mm; }
+  .indice { columns: 2; column-gap: 8mm; padding-left: 5mm; }
+  .indice li { margin-bottom: 1.5mm; }
+  .kbd { font-family: 'JetBrains Mono'; font-size: 0.85em; border: 1px solid #bbb6aa; border-bottom-width: 2px; border-radius: 1mm; padding: 0 1.2mm; background: #fff; }
+  .nobreak { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<section class="portada">
+  <div>
+    <div class="marca"><svg width="46" height="24" viewBox="0 24 100 52"><circle cx="24" cy="50" r="17" fill="none" stroke="#18191b" stroke-width="10"/><rect x="41" y="45" width="18" height="10" fill="#18191b"/><circle cx="76" cy="50" r="22" fill="#ffb000"/></svg><span>OficiosOs<span class="ia">IA</span></span></div>
+  </div>
+  <div>
+    <h1>Puesta en marcha de los becarios</h1>
+    <p class="sub">Guía paso a paso para empezar desde cero: entrar en el panel, conectar tu suscripción de Claude y lanzar tareas que acaban en un PR.</p>
+  </div>
+  <div class="bloque">
+    <p><strong>Para quién:</strong> Miguel (sirve igual para cualquiera que se una).</p>
+    <p><strong>Qué tendrás al terminar:</strong></p>
+    <ul>
+      <li>Acceso al panel y a la oficina de cada proyecto.</li>
+      <li>Tu propia tarea programada de Claude en cada proyecto, con tus tokens.</li>
+      <li>Asignar una tarea, que la haga un equipo de becarios en la nube con <strong>tu</strong> suscripción y te deje un PR para revisar.</li>
+      <li>(Opcional) Los becarios también en tu ordenador, con Claude Code.</li>
+    </ul>
+    <p style="margin-top:3mm"><strong>Tiempo:</strong> unos 30 minutos la primera vez y 10 minutos más por cada proyecto.</p>
+  </div>
+  <div class="pie">Versión del 31 de octubre de 2026 · Panel: <span class="mono">oficios-os-ia.vercel.app</span> · Becarios: <span class="mono">github.com/oficiososia/becarios</span></div>
+</section>
+
+<!-- ÍNDICE -->
+<section class="capitulo salto">
+  <h2>Índice</h2>
+  <ol class="indice">
+    <li>Cómo funciona todo (en una página)</li>
+    <li>Antes de empezar: lo que te tiene que dar Pablo</li>
+    <li>Entrar en el panel</li>
+    <li>Preparar tu cuenta de Claude</li>
+    <li>Conectar un proyecto (se repite por proyecto)</li>
+    <li>Primera prueba</li>
+    <li>El día a día</li>
+    <li>Claude Code en tu ordenador (opcional)</li>
+    <li>Si algo falla</li>
+    <li>Reglas de seguridad</li>
+    <li>Anexo A · Los becarios</li>
+    <li>Anexo B · Lista de comprobación por proyecto</li>
+    <li>Anexo C · Palabras raras</li>
+  </ol>
+
+  <div class="caja info">
+    <p><strong>Cómo leer esta guía.</strong> Ve en orden y no te saltes pasos. Cada paso empieza por un número amarillo. Las cajas de colores significan:</p>
+    <ul>
+      <li><strong>Amarilla (!):</strong> importante, léelo.</li>
+      <li><strong>Verde (✓):</strong> cómo comprobar que lo has hecho bien.</li>
+      <li><strong>Roja (✕):</strong> lo que no hay que hacer nunca.</li>
+      <li><strong>Azul (i):</strong> información extra.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 1 -->
+<section class="capitulo salto">
+  <h2><span class="num">1</span>Cómo funciona todo</h2>
+  <p>OficiosOsIA tiene una <strong>oficina virtual</strong>. Cada proyecto (Energym, Casa Tomás, JPR…) es una sala con varias habitaciones, una por departamento. En cada habitación hay <strong>becarios</strong>: agentes de inteligencia artificial que hacen trabajo de verdad sobre el código del proyecto.</p>
+
+  <table>
+    <tr><th>Departamento</th><th>Qué hace</th><th>Quién recibe las tareas</th></tr>
+    <tr><td><strong>Producto</strong></td><td>Convierte lo que pides en texto normal en tareas bien escritas en Notion.</td><td>PO, PM y CTO de producto</td></tr>
+    <tr><td><strong>Desarrollo</strong></td><td>Diseña, programa, prueba y prepara despliegues.</td><td>CTO</td></tr>
+    <tr><td><strong>Ciberseguridad</strong></td><td>Audita, prueba y protege: código, nube, datos y RGPD.</td><td>Responsable de seguridad</td></tr>
+    <tr><td><strong>Marketing</strong></td><td>SEO, contenidos, redes sociales, SEO local y analítica.</td><td>Dirección de marketing</td></tr>
+    <tr><td><strong>Soporte IT</strong></td><td>Infraestructura, sistemas, correo, redes e incidencias.</td><td>Jefatura de soporte IT</td></tr>
+  </table>
+
+  <h3>El viaje de una tarea</h3>
+  <div class="flujo">
+    <div><strong>1. Tú</strong>Asignas una tarea en el panel y marcas «lanzar en la nube».</div>
+    <div class="flecha">→</div>
+    <div><strong>2. Panel</strong>Avisa a <em>tu</em> tarea programada de Claude.</div>
+    <div class="flecha">→</div>
+    <div><strong>3. Claude</strong>Abre una sesión en la nube con tu suscripción y el equipo trabaja.</div>
+    <div class="flecha">→</div>
+    <div><strong>4. GitHub</strong>Los becarios abren un PR con los cambios.</div>
+    <div class="flecha">→</div>
+    <div><strong>5. Tú</strong>Revisas el PR y decides si se fusiona.</div>
+  </div>
+
+  <div class="caja aviso">
+    <p><strong>Todo va con tu suscripción de Claude.</strong> No se paga por uso de API. Cada lanzamiento gasta de tu plan (Pro, Max…) igual que si usaras Claude Code tú mismo. Lo que lanzas tú gasta tu suscripción; lo que lanza Pablo, la suya.</p>
+  </div>
+  <div class="caja peligro">
+    <p><strong>Los becarios nunca fusionan PRs ni despliegan a producción.</strong> Siempre lo decides tú. Tampoco tocan DNS, dominios ni cuentas de los clientes: si hace falta, te dejan los pasos escritos.</p>
+  </div>
+
+  <h3>Las piezas, para que te suenen</h3>
+  <ul>
+    <li><strong>El panel</strong> (<span class="mono">oficios-os-ia.vercel.app</span>): donde ves las oficinas, asignas tareas y guardas tus conexiones.</li>
+    <li><strong>Notion</strong>: donde viven las tareas (base «Oficios OS») y las fichas de los becarios.</li>
+    <li><strong>claude.ai/code</strong>: donde creas tus <em>tareas programadas</em> y ves las sesiones en la nube.</li>
+    <li><strong>GitHub</strong>: donde están los repositorios de los proyectos y donde llegan los PR.</li>
+    <li><strong>Vercel y Supabase</strong>: donde se publican las webs y se guardan los datos de cada proyecto.</li>
+  </ul>
+</section>
+
+<!-- 2 -->
+<section class="capitulo">
+  <h2><span class="num">2</span>Antes de empezar</h2>
+  <p class="tiempo">Esto lo prepara Pablo una sola vez. Pídeselo y no sigas hasta tenerlo todo.</p>
+
+  <table class="check">
+    <tr><th></th><th>Qué necesitas</th><th>Cómo saber que lo tienes</th></tr>
+    <tr><td><span class="cuadro"></span></td><td><strong>Usuario y contraseña del panel</strong> (usuario <span class="mono">Miguel</span>).</td><td>Puedes entrar en el panel (capítulo 3).</td></tr>
+    <tr><td><span class="cuadro"></span></td><td><strong>Suscripción de Claude</strong> Pro, Max, Team o Enterprise, a tu nombre.</td><td>En claude.ai → Ajustes → Plan ves tu plan. El plan gratuito no sirve.</td></tr>
+    <tr><td><span class="cuadro"></span></td><td><strong>Cuenta de GitHub</strong> con acceso a la organización <span class="mono">oficiososia</span> y a los repositorios de los clientes.</td><td>Abres <span class="mono">github.com/oficiososia</span> y ves los repos (por ejemplo, <span class="mono">energym-demo</span>).</td></tr>
+    <tr><td><span class="cuadro"></span></td><td><strong>Acceso al Notion</strong> de OficiosOsIA.</td><td>Ves la base de tareas «Oficios OS» y la página «Panel OficiosOsIA».</td></tr>
+    <tr><td><span class="cuadro"></span></td><td><strong>Acceso al Vercel</strong> de cada proyecto (invitación al equipo).</td><td>Entras en vercel.com y ves el proyecto.</td></tr>
+    <tr><td><span class="cuadro"></span></td><td><strong>Acceso al Supabase</strong> de cada proyecto que lo use.</td><td>Entras en supabase.com/dashboard y ves el proyecto.</td></tr>
+  </table>
+
+  <div class="caja info">
+    <p>Si un proyecto es de un cliente con sus propias cuentas (su GitHub, su Vercel, su Supabase), el cliente o Pablo te tienen que invitar en cada una. Sin acceso no podrás sacar los tokens del capítulo 5.</p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="capitulo">
+  <h2><span class="num">3</span>Entrar en el panel</h2>
+  <p class="tiempo">5 minutos.</p>
+  <ol class="pasos">
+    <li>Abre <strong><span class="mono">https://oficios-os-ia.vercel.app</span></strong> en el navegador.</li>
+    <li>Escribe tu usuario (<span class="mono">Miguel</span>) y tu contraseña. Pulsa <strong>Entrar</strong>. La sesión dura 7 días.</li>
+    <li>Verás la <strong>Oficina</strong>. Arriba hay una pestaña por proyecto: pulsa en una para cambiar de sala.</li>
+  </ol>
+  <figure><img src="img/02-oficina.png"><figcaption>La oficina de Energym: Producto, Desarrollo, Ciberseguridad, Marketing y Soporte IT. Cada becario está en su mesa: trabajando (con bocadillo «…»), en espera (con «!») o durmiendo (zetas).</figcaption></figure>
+
+  <h3>Las pestañas de arriba</h3>
+  <table>
+    <tr><th>Pestaña</th><th>Para qué sirve</th></tr>
+    <tr><td><strong>Oficina</strong></td><td>Ver qué hace cada becario, <strong>asignar tareas</strong> y elegir el <strong>equipo</strong> de cada proyecto.</td></tr>
+    <tr><td><strong>Equipo de producto</strong></td><td>Pedir cosas nuevas en texto normal, ver tus peticiones y preguntar cómo van las tareas.</td></tr>
+    <tr><td><strong>Tareas</strong></td><td>El tablero (kanban) con todas las tareas por fase. Se filtra por proyecto, departamento y becario.</td></tr>
+    <tr><td><strong>Becarios</strong></td><td>La ficha de cada becario: nombre, aspecto, instrucciones, modelo de IA y si está en pausa.</td></tr>
+    <tr><td><strong>Conexiones</strong></td><td><strong>Tus</strong> conexiones con Claude, una por proyecto. Es lo que vas a configurar en el capítulo 5.</td></tr>
+  </table>
+  <div class="caja ok"><p>Si ves la oficina con sus habitaciones y tu nombre arriba a la derecha, este capítulo está hecho.</p></div>
+</section>
+
+<!-- 4 -->
+<section class="capitulo salto">
+  <h2><span class="num">4</span>Preparar tu cuenta de Claude</h2>
+  <p class="tiempo">10 minutos. Se hace una sola vez.</p>
+
+  <h3>4.1 · Conectar GitHub a Claude</h3>
+  <ol class="pasos">
+    <li>Entra en <strong><span class="mono">claude.ai/code</span></strong> con tu cuenta de Claude.</li>
+    <li>La primera vez te pedirá <strong>conectar GitHub</strong>. Acepta y autoriza con tu cuenta de GitHub.</li>
+    <li>Instala la <strong>app de Claude en GitHub</strong>: abre <span class="mono">github.com/apps/claude</span> → <strong>Configure</strong> (o <strong>Install</strong>) → elige la organización <span class="mono">oficiososia</span> → marca los repositorios de los proyectos (o «All repositories») → <strong>Save</strong>.</li>
+    <li>Si un repositorio es de <strong>otra cuenta</strong> (de un cliente), quien lo administra tiene que instalar ahí la app de Claude, o añadirte como colaborador con permiso de escritura.</li>
+  </ol>
+  <div class="caja ok"><p>En claude.ai/code, al empezar una sesión nueva, puedes elegir el repositorio del proyecto en la lista.</p></div>
+
+  <h3>4.2 · Conectar Notion a Claude</h3>
+  <ol class="pasos">
+    <li>Abre <strong><span class="mono">claude.ai/customize/connectors</span></strong> (Ajustes → Conectores).</li>
+    <li>Busca <strong>Notion</strong> → <strong>Conectar</strong>.</li>
+    <li>En la ventana de Notion, elige el espacio de trabajo de OficiosOsIA y da acceso. Si te deja elegir páginas, marca como mínimo la base <strong>«Oficios OS»</strong> y la página <strong>«Panel OficiosOsIA»</strong>.</li>
+  </ol>
+  <div class="caja aviso"><p>Sin Notion conectado, los becarios no pueden leer la tarea ni dejarla al día, y la sesión se para con el mensaje «Conecta Notion a la tarea programada».</p></div>
+</section>
+
+<!-- 5 -->
+<section class="capitulo salto">
+  <h2><span class="num">5</span>Conectar un proyecto</h2>
+  <p class="tiempo">10 minutos por proyecto. <strong>Repite este capítulo entero para cada proyecto</strong> (Energym, Casa Tomás…). En los ejemplos uso Energym.</p>
+
+  <div class="caja info"><p>Vas a crear tres cosas en Claude: un <strong>entorno</strong> (dónde trabaja y con qué tokens), una <strong>tarea programada</strong> (qué hace) y un <strong>disparador</strong> (el botón que pulsa el panel). Después pegas el disparador en el panel.</p></div>
+
+  <h3>5.1 · Saca los datos de Vercel</h3>
+  <ol class="pasos">
+    <li><strong>Token:</strong> en <span class="mono">vercel.com</span>, pulsa tu foto (arriba a la derecha) → <strong>Account Settings</strong> → <strong>Tokens</strong>. Pulsa <strong>Create Token</strong>:
+      <ul><li>Nombre: <span class="mono">Claude · Energym</span></li><li>Scope: el equipo donde está el proyecto</li><li>Caducidad: la que prefieras (por ejemplo, 1 año)</li></ul>
+      Pulsa <strong>Create</strong> y <strong>copia el token</strong> en un sitio temporal (por ejemplo, una nota que borrarás después). Solo se ve una vez.</li>
+    <li><strong>Project ID:</strong> abre el proyecto en Vercel → <strong>Settings</strong> → <strong>General</strong> → copia <strong>Project ID</strong> (empieza por <span class="mono">prj_</span>).</li>
+    <li><strong>Team ID:</strong> en el equipo → <strong>Settings</strong> → <strong>General</strong> → copia <strong>Team ID</strong> (empieza por <span class="mono">team_</span>). Si el proyecto está en una cuenta personal, no hay Team ID: déjalo en blanco.</li>
+  </ol>
+
+  <h3>5.2 · Saca los datos de Supabase <span class="etq">si el proyecto lo usa</span></h3>
+  <ol class="pasos">
+    <li><strong>Token:</strong> abre <span class="mono">supabase.com/dashboard/account/tokens</span> → <strong>Generate new token</strong> → nombre <span class="mono">Claude · Energym</span> → copia el token (empieza por <span class="mono">sbp_</span>). Solo se ve una vez.</li>
+    <li><strong>Project ref:</strong> abre el proyecto → <strong>Project Settings</strong> → <strong>General</strong> → copia el <strong>Project ID</strong>. Son unas 20 letras: lo mismo que aparece en la dirección <span class="mono">xxxxxxxx.supabase.co</span>.</li>
+  </ol>
+
+  <h3>5.3 · Crea el entorno en la nube</h3>
+  <ol class="pasos">
+    <li>Entra en <strong><span class="mono">claude.ai/code</span></strong>. En la pantalla de sesión nueva, debajo de la caja de texto, pulsa el <strong>primer botón</strong> (el selector de entorno, suele poner «Default»).</li>
+    <li>Abajo del menú, pulsa <strong>New environment</strong>. Nombre: <span class="mono">Energym</span>.</li>
+    <li><strong>Network access</strong> → elige <strong>Custom</strong> → marca <strong>«Also include default list of common package managers»</strong> → en <strong>Allowed domains</strong> añade, uno por línea:
+<pre>api.vercel.com
+*.vercel.app
+api.supabase.com
+*.supabase.co
+api.notion.com</pre></li>
+    <li><strong>Environment variables</strong> → pega esto con tus datos (una por línea, sin comillas):
+<pre>VERCEL_PROJECT_ID=prj_xxxxxxxxxxxx
+VERCEL_TEAM_ID=team_xxxxxxxxxxxx
+SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
+      Añade también las variables <strong>públicas</strong> que necesite la web para compilar (las que empiezan por <span class="mono">VITE_</span> o <span class="mono">NEXT_PUBLIC_</span>; vienen en el README del proyecto o en Vercel → Settings → Environment Variables).</li>
+    <li><strong>Setup script</strong> <span class="etq">opcional</span>: pega el contenido de <span class="mono">github.com/oficiososia/becarios/blob/HEAD/plugins/oficina/rutina/setup.sh</span>. Instala las herramientas de Vercel, Supabase y el navegador para las pruebas.</li>
+    <li>Pulsa <strong>Add environment</strong>.</li>
+  </ol>
+  <div class="caja peligro"><p><strong>Nunca pongas tokens en «Environment variables».</strong> Los tokens van en el paso siguiente, como <em>secretos de red</em>: así Claude los usa sin poder verlos.</p></div>
+
+  <h3>5.4 · Guarda los tokens como secretos de red</h3>
+  <ol class="pasos">
+    <li>Vuelve a abrir el selector de entorno, pasa el ratón por <strong>Energym</strong> y pulsa el <strong>icono de ajustes</strong> que aparece a la derecha.</li>
+    <li>En <strong>Edit cloud environment</strong>, entra en <strong>Network secrets</strong> → <strong>Add secret</strong>. Deja el tipo en <strong>Bearer</strong> y rellena:
+      <table>
+        <tr><th>Campo</th><th>Secreto de Vercel</th><th>Secreto de Supabase</th></tr>
+        <tr><td>Name</td><td><span class="mono">Vercel</span></td><td><span class="mono">Supabase</span></td></tr>
+        <tr><td>Allowed websites</td><td><span class="mono">api.vercel.com</span></td><td><span class="mono">api.supabase.com</span></td></tr>
+        <tr><td>Header · Name</td><td><span class="mono">Authorization</span> (ya viene puesto)</td><td><span class="mono">Authorization</span></td></tr>
+        <tr><td>Header · Prefix</td><td><span class="mono">Bearer</span> (ya viene puesto)</td><td><span class="mono">Bearer</span></td></tr>
+        <tr><td>Header · Value</td><td>tu token de Vercel</td><td>tu token de Supabase</td></tr>
+      </table>
+      Pulsa <strong>Add</strong> en cada uno. Se guardan solos.</li>
+    <li>Borra la nota temporal donde copiaste los tokens.</li>
+  </ol>
+  <div class="caja ok"><p>En <strong>Network secrets</strong> ves «Vercel» y «Supabase» con su dominio al lado. Ya no se puede ver el valor: es lo normal.</p></div>
+</section>
+
+<section class="capitulo">
+  <h3 style="margin-top:0">5.5 · Crea la tarea programada</h3>
+  <ol class="pasos">
+    <li>Abre <strong><span class="mono">claude.ai/code/routines</span></strong> y pulsa <strong>New task</strong> (puede llamarse <strong>New routine</strong>). Si te pregunta, elige <strong>Set up manually</strong>.</li>
+    <li><strong>Nombre:</strong> <span class="mono">Becarios · Energym</span>.</li>
+    <li><strong>Instrucciones (prompt):</strong> en el panel, pestaña <strong>Conexiones</strong>, pulsa <strong>(copiar)</strong> junto a «este prompt» y pégalo aquí. También está en <span class="mono">github.com/oficiososia/becarios</span> → <span class="mono">plugins/oficina/rutina/prompt.md</span> (copia solo el bloque de texto). <strong>Es el mismo para todos los proyectos</strong>: no lo cambies.</li>
+    <li><strong>Trigger:</strong> elige <strong>API</strong>. No pongas horario.</li>
+    <li>Abre <strong>Advanced settings</strong> → pestaña <strong>General</strong>:
+      <ul><li><strong>Repository:</strong> el repositorio del proyecto (por ejemplo, <span class="mono">oficiososia/energym-demo</span>). Solo ese.</li>
+          <li><strong>Cloud environment:</strong> <span class="mono">Energym</span> (el que creaste en 5.3).</li></ul></li>
+    <li><strong>Modelo:</strong> en el selector de modelo de la caja del prompt, elige <strong>Sonnet</strong> para el día a día. Opus razona mejor pero gasta más suscripción.</li>
+    <li>Pestaña <strong>Connectors</strong>: deja <strong>Notion</strong> y quita los demás si no hacen falta.</li>
+    <li>Pulsa <strong>Create</strong>. Aparece la ventana <strong>API token</strong>: <strong>copia el token ahora</strong> (empieza por <span class="mono">sk-ant-oat01-</span>). Solo se ve esta vez.</li>
+    <li>En la página de la tarea, menú junto al nombre → <strong>Edit</strong> → en la fila <strong>Trigger</strong>, abre el disparador <strong>API</strong> y copia la <strong>Fire URL</strong>. Es una dirección así:
+<pre>https://api.anthropic.com/v1/claude_code/routines/trig_XXXXXXXXXXXX/fire</pre></li>
+  </ol>
+  <div class="caja aviso"><p>Si se te pasó copiar el token, no pasa nada: en <strong>Edit</strong> → disparador API pulsa <strong>Regenerate</strong> y te sale uno nuevo (el anterior deja de valer).</p></div>
+  <div class="caja peligro"><p>No pulses <strong>Run now</strong> en esta tarea: sin encargo del panel no hace nada y te contesta «Esta tarea solo funciona cuando se lanza desde el panel».</p></div>
+
+  <h3>5.6 · Pega la conexión en el panel</h3>
+  <ol class="pasos">
+    <li>En el panel, pestaña <strong>Conexiones</strong>.</li>
+    <li>En la tarjeta del proyecto (Energym), pega la <strong>URL del disparador</strong> (la Fire URL) y el <strong>Token</strong>.</li>
+    <li>Pulsa <strong>Guardar</strong>.</li>
+  </ol>
+  <figure><img src="img/03-conexiones.png"><figcaption>Pestaña Conexiones. Energym ya está «Conectada»; Casa Tomás y JPR aún no. A la derecha tienes estos mismos pasos resumidos.</figcaption></figure>
+  <div class="caja ok"><p>La tarjeta pone <strong>Conectada</strong> y en la oficina de ese proyecto aparece <strong>«☁ En la nube»</strong> arriba. El token se guarda cifrado: ni Pablo ni Notion lo pueden ver.</p></div>
+</section>
+
+<!-- 6 -->
+<section class="capitulo">
+  <h2><span class="num">6</span>Primera prueba</h2>
+  <p class="tiempo">5 minutos, más lo que tarde Claude en hacer la tarea.</p>
+  <ol class="pasos">
+    <li>En Notion, crea una tarea pequeña y sin riesgo en «Oficios OS». Por ejemplo: «Revisar los textos del pie de página». Pon en <strong>Proyecto relacionado</strong> el nombre exacto del proyecto (<span class="mono">Energym</span>) y deja el Estado en Inbox.</li>
+    <li>En el panel, entra en la oficina de Energym y pulsa <strong>Asignar tareas</strong>.</li>
+    <li>Marca tu tarea. Elige el <strong>departamento</strong> (para esta prueba, <strong>Marketing</strong> o <strong>Desarrollo</strong>).</li>
+    <li>Marca <strong>«Lanzarlas ya en la nube con mi suscripción»</strong>. Si quieres, escribe una indicación (por ejemplo, «solo cambios pequeños»).</li>
+    <li>Pulsa <strong>Pasar 1 a … y lanzar ☁</strong>.</li>
+  </ol>
+  <figure><img src="img/05-asignar.png"><figcaption>Asignar tareas: departamento, «lanzar en la nube» e indicaciones opcionales.</figcaption></figure>
+  <div class="dos">
+    <figure><img src="img/06-lanzada.png"><figcaption>Lanzada: «Ver la sesión ↗» abre la sesión de Claude en tu cuenta.</figcaption></figure>
+    <div>
+      <div class="caja ok" style="margin-top:3mm"><p>Funciona si:</p>
+        <ul><li>Te sale <strong>«En marcha en la nube»</strong> con <strong>Ver la sesión ↗</strong>.</li>
+            <li>En la sesión ves al equipo trabajar con líneas tipo <span class="mono">[Oficina] «…» · Energym · marketing ✅</span>.</li>
+            <li>Al terminar hay un <strong>PR</strong> en GitHub, firmado con tu usuario.</li>
+            <li>La tarea en Notion pasa a <strong>«PR y revisión»</strong>, en «En espera», con el enlace al PR.</li></ul></div>
+      <div class="caja info"><p>Una tarea normal tarda entre 10 y 40 minutos. Puedes cerrar el navegador: la sesión sigue en la nube.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="capitulo">
+  <h2><span class="num">7</span>El día a día</h2>
+
+  <h3>7.1 · Pedir algo nuevo</h3>
+  <ol class="pasos">
+    <li>Panel → <strong>Equipo de producto</strong> → <strong>Nueva petición</strong>. Elige el proyecto y escribe lo que necesitas como se lo dirías a una persona.</li>
+    <li>Pulsa <strong>Enviar al equipo</strong>. Si aún no está madura, <strong>Guardar para más tarde</strong>.</li>
+    <li>El equipo de producto (PO, PM y CTO) la convierte en tareas cuando alguien ejecuta <span class="mono">/producto:producto</span> en Claude Code (capítulo 8). Te enseña las tareas propuestas y las crea en Notion cuando dices «sí».</li>
+  </ol>
+  <figure><img src="img/10-producto.png"><figcaption>Equipo de producto: nueva petición en texto normal.</figcaption></figure>
+
+  <h3>7.2 · Asignar y lanzar</h3>
+  <ul>
+    <li><strong>Tareas nuevas</strong> (sin departamento): oficina → <strong>Asignar tareas</strong> → márcalas → departamento → «lanzar en la nube» → botón amarillo. Puedes lanzar hasta 10 de golpe; cada una abre su propia sesión.</li>
+    <li><strong>Tareas que ya están en un departamento:</strong> pulsa en la mesa del becario que la tiene o en «Asignar tareas» → botón <strong>☁ Lanzar</strong> junto a la tarea.</li>
+    <li><strong>Sin lanzar:</strong> si no marcas «lanzar en la nube», la tarea solo pasa al departamento y espera a que alguien la lance.</li>
+  </ul>
+  <figure><img src="img/07-mesa.png"><figcaption>Al pulsar en una mesa ves sus tareas, el enlace al PR si lo hay y el botón «☁ Lanzar».</figcaption></figure>
+</section>
+
+<section class="capitulo">
+  <h3 style="margin-top:0">7.3 · Seguir el trabajo</h3>
+  <ul>
+    <li><strong>En el panel:</strong> la oficina se actualiza sola cada minuto. Un becario trabajando tiene bocadillo «…»; en espera, «!».</li>
+    <li><strong>En Claude:</strong> en <span class="mono">claude.ai/code</span> o en la app de Claude (también en el móvil) tienes la lista de sesiones. Puedes escribirle a la sesión mientras trabaja («usa el componente de botón que ya existe») y te hace caso.</li>
+    <li><strong>En el tablero:</strong> pestaña <strong>Tareas</strong>, con una columna por fase.</li>
+  </ul>
+  <figure><img src="img/08-tareas.png"><figcaption>Tablero de tareas por fase. Filtra por proyecto, departamento o becario.</figcaption></figure>
+
+  <h3>7.4 · Revisar el PR (lo importante)</h3>
+  <ol class="pasos">
+    <li>Abre el PR desde la tarea («Ver PR ↗») o desde GitHub.</li>
+    <li>Lee el <strong>resumen</strong>, qué hizo cada becario, <strong>cómo se probó</strong> y los <strong>pendientes de una persona</strong>.</li>
+    <li>Abre la <strong>preview de Vercel</strong> (el enlace que pone el bot de Vercel en el PR) y prueba los cambios en el móvil y en el ordenador.</li>
+    <li>¿Está bien? <strong>Fusiona</strong> el PR. ¿Falta algo? Escríbeselo a la sesión de Claude o vuelve a lanzar la tarea con una indicación.</li>
+    <li>Cuando esté en producción y comprobado, pon la tarea en <strong>Hecha</strong> en Notion.</li>
+  </ol>
+  <div class="caja aviso"><p><strong>Límites de Claude:</strong> 30 lanzamientos por hora en cada tarea programada y 100 por hora en tu cuenta. Si llegas, el panel te dice cuántos minutos esperar.</p></div>
+
+  <h3>7.5 · Equipo de cada oficina y fichas</h3>
+  <ul>
+    <li><strong>Equipo</strong> (botón en cada oficina): marca qué departamentos y qué becarios trabajan en ese proyecto. Cada departamento necesita a su «entrada» (CTO, Responsable de seguridad…), que es quien recibe las tareas.</li>
+    <li><strong>Becarios</strong> (pestaña): cambia el nombre, el aspecto, las <strong>instrucciones</strong> que siguen siempre, el <strong>modelo</strong> (Rápido, Equilibrado, A fondo) o ponlos en <strong>pausa</strong>. Lo guardan en Notion y lo leen al empezar cada tarea.</li>
+  </ul>
+</section>
+
+<!-- 8 -->
+<section class="capitulo salto">
+  <h2><span class="num">8</span>Claude Code en tu ordenador <span class="etq">opcional</span></h2>
+  <p>No hace falta para lanzar en la nube. Sirve para usar al <strong>equipo de producto</strong> (<span class="mono">/producto:producto</span>) y para trabajar con los becarios en tu ordenador.</p>
+
+  <h3>8.1 · Instalar Claude Code</h3>
+  <p>Lo más fácil: descarga la <strong>app de escritorio de Claude</strong> desde <span class="mono">claude.com/download</span>, que ya trae Claude Code. Si prefieres la terminal:</p>
+  <div class="dos">
+    <div><p><strong>Mac o Linux</strong> (app Terminal):</p><pre>curl -fsSL https://claude.ai/install.sh | bash</pre></div>
+    <div><p><strong>Windows</strong> (PowerShell):</p><pre>irm https://claude.ai/install.ps1 | iex</pre></div>
+  </div>
+  <ol class="pasos">
+    <li>Cierra la terminal, abre otra y escribe <span class="mono">claude --version</span>. Debe salir un número de versión.</li>
+    <li>Escribe <span class="mono">claude</span> y pulsa <span class="kbd">Intro</span>. Se abre el navegador: entra con tu cuenta de Claude (la de la suscripción).</li>
+  </ol>
+
+  <h3>8.2 · Instalar los becarios</h3>
+  <p>Dentro de Claude Code, escribe estas líneas una a una, pulsando <span class="kbd">Intro</span> después de cada una:</p>
+<pre>/plugin marketplace add oficiososia/becarios
+/plugin install producto@oficiososia
+/plugin install desarrollo@oficiososia
+/plugin install seguridad@oficiososia
+/plugin install marketing@oficiososia
+/plugin install soporte@oficiososia
+/plugin install oficina@oficiososia</pre>
+  <p>Cierra Claude Code (<span class="kbd">Ctrl</span>+<span class="kbd">C</span> dos veces) y vuelve a abrirlo con <span class="mono">claude</span>.</p>
+  <div class="caja ok"><p>Escribe <span class="mono">/</span> y deben salir, entre otros, <span class="mono">/producto:producto</span>, <span class="mono">/desarrollo:becarios</span>, <span class="mono">/seguridad:seguridad</span>, <span class="mono">/marketing:marketing</span> y <span class="mono">/soporte:soporte</span>.</p></div>
+
+  <h3>8.3 · Notion en Claude Code</h3>
+  <p>Si ya conectaste Notion en claude.ai (capítulo 4.2), Claude Code lo usa solo. Compruébalo escribiendo <span class="mono">/mcp</span>: debe salir Notion como conectado. Si no sale, conéctalo desde ahí.</p>
+
+  <h3>8.4 · Los comandos</h3>
+  <table>
+    <tr><th>Comando</th><th>Qué hace</th></tr>
+    <tr><td><span class="mono">/producto:producto</span></td><td>Contesta el chat del panel y convierte las peticiones pendientes en tareas de Notion. Te pide confirmación antes de crearlas.</td></tr>
+    <tr><td><span class="mono">/producto:producto chat</span></td><td>Solo contesta el chat.</td></tr>
+    <tr><td><span class="mono">/desarrollo:becarios &lt;URL de la tarea&gt;</span></td><td>El equipo de desarrollo trabaja una tarea en tu ordenador, en la carpeta del proyecto.</td></tr>
+    <tr><td><span class="mono">/seguridad:seguridad &lt;URL&gt;</span></td><td>Auditoría de seguridad de una tarea.</td></tr>
+    <tr><td><span class="mono">/marketing:marketing &lt;URL&gt;</span></td><td>Trabajo de marketing de una tarea.</td></tr>
+    <tr><td><span class="mono">/soporte:soporte &lt;URL&gt;</span></td><td>Diagnóstico de una incidencia.</td></tr>
+  </table>
+  <div class="caja info"><p>Para los comandos de un proyecto, abre Claude Code <strong>dentro de la carpeta de ese proyecto</strong> (<span class="mono">git clone</span> del repo y <span class="mono">cd</span> a la carpeta). La URL de la tarea es la de su página en Notion (Compartir → Copiar enlace).</p></div>
+</section>
+
+<!-- 9 -->
+<section class="capitulo salto">
+  <h2><span class="num">9</span>Si algo falla</h2>
+  <p>Busca el mensaje que ves y haz lo que dice la columna de la derecha.</p>
+  <table>
+    <tr><th style="width:45%">Mensaje o síntoma</th><th>Qué hacer</th></tr>
+    <tr><td>«No tienes conexión con Claude para …»</td><td>Te falta la conexión de ese proyecto: capítulo 5.6.</td></tr>
+    <tr><td>«El token no vale para esa tarea programada»</td><td>En claude.ai/code/routines → la tarea → Edit → disparador API → <strong>Regenerate</strong>. Pega el token nuevo en Conexiones.</td></tr>
+    <tr><td>«Esa tarea programada ya no existe en tu cuenta»</td><td>La URL es de una tarea borrada. Repite 5.5 y 5.6.</td></tr>
+    <tr><td>«¿Está en pausa la tarea programada?»</td><td>En claude.ai/code/routines, reactiva la tarea.</td></tr>
+    <tr><td>«Has llegado al límite de lanzamientos por hora»</td><td>Espera los minutos que indica. Son 30 por hora en cada tarea y 100 por cuenta.</td></tr>
+    <tr><td>«… no tiene a … en …: añádelo con Equipo»</td><td>Ese departamento no tiene a su entrada en el equipo del proyecto: botón <strong>Equipo</strong> de la oficina.</td></tr>
+    <tr><td>«… está en pausa»</td><td>Pestaña <strong>Becarios</strong> → Configurar → quita la pausa.</td></tr>
+    <tr><td>«… no tiene Repositorio en la base Proyectos»</td><td>Pide a Pablo que rellene «Repositorio» de ese proyecto en Notion.</td></tr>
+    <tr><td>«Falta CONEXIONES_SECRETO en Vercel»</td><td>Avisa a Pablo: falta una variable en el Vercel del panel.</td></tr>
+    <tr><td>La sesión dice «Conecta Notion a la tarea programada»</td><td>Capítulo 4.2, y en la tarea programada → Edit → Connectors → añade Notion.</td></tr>
+    <tr><td>La sesión dice que el repositorio no coincide o no puede clonarlo</td><td>La tarea programada tiene otro repositorio, o tu GitHub no tiene acceso: revisa 4.1 y 5.5 (paso 5).</td></tr>
+    <tr><td>Errores 403 al llamar a Vercel o Supabase (<span class="mono">host_not_allowed</span>)</td><td>Falta el dominio en Network access: capítulo 5.3, paso 3.</td></tr>
+    <tr><td>La sesión no puede leer Vercel o Supabase (401)</td><td>El secreto de red tiene mal el token o el dominio: capítulo 5.4. Si el token caducó, crea otro.</td></tr>
+    <tr><td>La sesión dice que la preview de Vercel pide acceso</td><td>El proyecto tiene la protección de despliegues activada. Los becarios prueban entonces contra la web compilada en local; para probar la preview, quita la protección en Vercel o da acceso.</td></tr>
+    <tr><td>Se ha abierto un PR en borrador con «Bloqueo» en la tarea</td><td>Los becarios se atascaron: lee el motivo en «Bloqueo» y en la sesión, arréglalo y vuelve a lanzar.</td></tr>
+    <tr><td>No salen las habitaciones de un departamento</td><td>Ese departamento no está en el equipo del proyecto: botón <strong>Equipo</strong>.</td></tr>
+  </table>
+  <div class="caja info"><p>Si nada de esto lo arregla, manda a Pablo: el enlace de la sesión de Claude, el enlace de la tarea en Notion y una captura del mensaje.</p></div>
+</section>
+
+<!-- 10 -->
+<section class="capitulo">
+  <h2><span class="num">10</span>Reglas de seguridad</h2>
+  <div class="caja peligro">
+    <ul>
+      <li><strong>Los tokens solo van en dos sitios:</strong> en los <em>secretos de red</em> de claude.ai (Vercel y Supabase) y en la pestaña <em>Conexiones</em> del panel (el del disparador). En ningún otro.</li>
+      <li>Nunca pegues tokens ni contraseñas en Notion, en el chat del panel, en una tarea, en un PR, en el código ni en un mensaje a nadie.</li>
+      <li>Nunca pongas tokens en «Environment variables» del entorno de Claude.</li>
+      <li>No compartas tu tarea programada ni su token: lo que se lance con ella gasta <strong>tu</strong> suscripción.</li>
+      <li>El repositorio <span class="mono">oficiososia/becarios</span> es <strong>público</strong>: no subas ahí nada de clientes.</li>
+    </ul>
+  </div>
+  <h3>Si crees que se ha filtrado un token</h3>
+  <ol class="pasos">
+    <li><strong>Disparador:</strong> claude.ai/code/routines → la tarea → Edit → disparador API → <strong>Regenerate</strong>, y pega el nuevo en Conexiones.</li>
+    <li><strong>Vercel:</strong> Account Settings → Tokens → borra el token y crea otro; cámbialo en el secreto de red (5.4).</li>
+    <li><strong>Supabase:</strong> Account → Access Tokens → revoca el token y crea otro; cámbialo en el secreto de red.</li>
+    <li>Avisa a Pablo.</li>
+  </ol>
+</section>
+
+<!-- ANEXO A -->
+<section class="capitulo salto">
+  <h2><span class="num">A</span>Los becarios</h2>
+  <p>27 becarios en 4 departamentos, más el equipo de producto. La <strong>entrada</strong> de cada departamento (en negrita) recibe las tareas, hace el plan y reparte.</p>
+  <div class="dos">
+    <div>
+      <h3>Desarrollo</h3>
+      <ul>
+        <li><strong>CTO</strong> · plan técnico, reparto y revisión del PR</li>
+        <li>Diseño UX/UI · pantallas, prototipos y accesibilidad</li>
+        <li>Frontend · interfaces y responsive</li>
+        <li>Backend · datos · modelos, migraciones y permisos</li>
+        <li>Backend · servicios · lógica, endpoints e integraciones</li>
+        <li>IA y automatizaciones · chatbots, Claude, WhatsApp</li>
+        <li>QA funcional · recorridos y criterios de aceptación</li>
+        <li>QA técnico · integración, API y regresión</li>
+        <li>Delivery · despliegues y registro en Notion</li>
+      </ul>
+      <h3>Ciberseguridad</h3>
+      <ul>
+        <li><strong>Responsable de seguridad</strong> · riesgos y veredicto</li>
+        <li>Seguridad de aplicaciones · OWASP, accesos, XSS</li>
+        <li>Nube y datos · Supabase, Vercel, firewall, copias</li>
+        <li>Pentesting · pruebas de intrusión en DEMO y preview</li>
+        <li>Dependencias y secretos · librerías y claves filtradas</li>
+        <li>Cumplimiento y privacidad · RGPD, cookies, brechas</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Marketing</h3>
+      <ul>
+        <li><strong>Dirección de marketing</strong> · posicionamiento y plan</li>
+        <li>SEO técnico · indexación, metadatos, sitemap</li>
+        <li>Contenidos · textos, blog y palabras clave</li>
+        <li>Redes sociales · calendario y publicaciones</li>
+        <li>SEO local · Google Business Profile y reseñas</li>
+        <li>Analítica · medición y conversiones (con RGPD)</li>
+      </ul>
+      <h3>Soporte IT</h3>
+      <ul>
+        <li><strong>Jefatura de soporte IT</strong> · diagnóstico y reparto</li>
+        <li>Soporte IT · incidencias, guías y documentación</li>
+        <li>Infraestructura · hosting, dominios, DNS, SSL</li>
+        <li>Sistemas · equipos, cuentas, monitorización</li>
+        <li>Comunicaciones · correo, telefonía, WhatsApp</li>
+        <li>Conectividad · redes, wifi, VPN, TPV</li>
+      </ul>
+      <h3>Producto</h3>
+      <ul>
+        <li>Product Owner · historias y criterios</li>
+        <li>Project Manager · prioridad y estimación</li>
+        <li>CTO de producto · plan técnico y departamento</li>
+      </ul>
+    </div>
+  </div>
+  <div class="nobreak"><h3>Fases de cada departamento</h3>
+  <table>
+    <tr><th>Departamento</th><th>Fases en Notion</th></tr>
+    <tr><td>Desarrollo</td><td>Preparación → Desarrollo y unitarias → Despliegue DEMO → QA DEMO → PR y revisión (→ Despliegue PROD → QA PROD, siempre a mano)</td></tr>
+    <tr><td>Ciberseguridad</td><td>Preparación → Auditoría → PR y revisión</td></tr>
+    <tr><td>Marketing</td><td>Preparación → Producción → PR y revisión</td></tr>
+    <tr><td>Soporte IT</td><td>Preparación → Intervención → PR y revisión</td></tr>
+  </table></div>
+</section>
+
+<!-- ANEXO B -->
+<section class="capitulo salto">
+  <h2><span class="num">B</span>Lista de comprobación por proyecto</h2>
+  <p>Imprime esta página (o cópiala) y márcala para cada proyecto.</p>
+  <p><strong>Proyecto:</strong> ______________________________ &nbsp;&nbsp; <strong>Repositorio:</strong> ______________________________</p>
+  <table class="check">
+    <tr><th></th><th>Paso</th><th>Dónde</th></tr>
+    <tr><td><span class="cuadro"></span></td><td>La app de Claude está instalada en el repositorio del proyecto</td><td>github.com/apps/claude</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Token de Vercel creado</td><td>Vercel → Account Settings → Tokens</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Project ID y Team ID copiados</td><td>Vercel → Settings → General</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Token de Supabase creado (si lo usa)</td><td>supabase.com/dashboard/account/tokens</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Project ref de Supabase copiado (si lo usa)</td><td>Supabase → Project Settings → General</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Entorno creado con los dominios permitidos</td><td>claude.ai/code → selector de entorno</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Variables puestas (IDs y variables públicas, sin tokens)</td><td>Entorno → Environment variables</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Secretos de red de Vercel y Supabase añadidos</td><td>Entorno → Network secrets</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Tarea programada creada (prompt, repo, entorno, Notion)</td><td>claude.ai/code/routines</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Disparador API con token copiado</td><td>Tarea → Edit → Trigger → API</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Conexión guardada y «Conectada»</td><td>Panel → Conexiones</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Equipo del proyecto con los departamentos que toquen</td><td>Panel → Oficina → Equipo</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Primera prueba con PR abierto</td><td>Panel → Asignar tareas → lanzar</td></tr>
+    <tr><td><span class="cuadro"></span></td><td>Notas temporales con tokens borradas</td><td>—</td></tr>
+  </table>
+</section>
+
+<!-- ANEXO C -->
+<section class="capitulo salto">
+  <h2><span class="num">C</span>Palabras raras</h2>
+  <table>
+    <tr><th style="width:30%">Palabra</th><th>Qué significa</th></tr>
+    <tr><td><strong>Becario</strong></td><td>Un agente de IA con un papel concreto (frontend, SEO, pentesting…).</td></tr>
+    <tr><td><strong>Entrada</strong></td><td>El becario que recibe las tareas de su departamento y reparte el trabajo.</td></tr>
+    <tr><td><strong>Repositorio (repo)</strong></td><td>La carpeta del código de un proyecto en GitHub.</td></tr>
+    <tr><td><strong>Rama</strong></td><td>Una copia del código donde se hacen cambios sin tocar la versión principal. Las de los becarios empiezan por <span class="mono">claude/</span>.</td></tr>
+    <tr><td><strong>PR (pull request)</strong></td><td>La propuesta de cambios de una rama. Tú la revisas y, si está bien, la <em>fusionas</em> (merge) en la versión principal.</td></tr>
+    <tr><td><strong>Preview / DEMO</strong></td><td>Una copia de la web con los cambios del PR que Vercel publica sola para probarla antes de fusionar.</td></tr>
+    <tr><td><strong>Producción (PROD)</strong></td><td>La web de verdad que ven los clientes.</td></tr>
+    <tr><td><strong>Tarea programada (routine)</strong></td><td>Una configuración guardada en tu cuenta de Claude (instrucciones, repositorio, entorno y conectores) que se pone en marcha cuando el panel la llama.</td></tr>
+    <tr><td><strong>Disparador (trigger) API</strong></td><td>La dirección (Fire URL) y la llave (token) con las que el panel pone en marcha tu tarea programada.</td></tr>
+    <tr><td><strong>Entorno en la nube</strong></td><td>El «ordenador» de Claude en la nube para un proyecto: qué webs puede visitar, qué variables tiene y qué secretos usa.</td></tr>
+    <tr><td><strong>Secreto de red</strong></td><td>Un token que Claude usa para llamar a una web (Vercel, Supabase) sin poder verlo.</td></tr>
+    <tr><td><strong>Token</strong></td><td>Una contraseña larga para que un programa entre en una cuenta. Trátalo como una contraseña.</td></tr>
+    <tr><td><strong>Conector</strong></td><td>Una conexión de tu cuenta de Claude con otra app (Notion, por ejemplo).</td></tr>
+    <tr><td><strong>Fase / Estado</strong></td><td>En Notion: la <em>fase</em> dice en qué punto del flujo está la tarea (Preparación, Auditoría…); el <em>estado</em>, si está por hacer, en progreso, en espera o hecha.</td></tr>
+    <tr><td><strong>Subtarea</strong></td><td>Una tarea hija que crean los becarios (por ejemplo, un fallo encontrado). No sale en el panel; se ve dentro de la tarea padre en Notion.</td></tr>
+  </table>
+  <div class="caja ok" style="margin-top:8mm"><p><strong>¡Listo!</strong> Si has llegado hasta aquí con la lista del Anexo B marcada, ya eres operativo. Bienvenido a la oficina.</p></div>
+</section>
+
+</body>
+</html>

@@ -5,10 +5,25 @@
     "url": "https://github.com/oficiososia"
   },
   "metadata": {
-    "description": "Los departamentos de becarios de OficiosOsIA: marketing, soporte IT, ciberseguridad y la oficina en la nube que ejecuta las tareas del panel hasta el PR.",
-    "version": "0.1.0"
+    "description": "Todos los becarios de OficiosOsIA: producto, desarrollo, ciberseguridad, marketing, soporte IT y la oficina en la nube que ejecuta las tareas del panel hasta el PR.",
+    "version": "0.2.0"
   },
   "plugins": [
+    {
+      "name": "producto",
+      "source": "./plugins/producto",
+      "description": "Equipo de producto: Product Owner, Project Manager y CTO de producto. Convierte las peticiones del panel en tareas de Notion y contesta el chat."
+    },
+    {
+      "name": "desarrollo",
+      "source": "./plugins/desarrollo",
+      "description": "Departamento de desarrollo: CTO, diseño UX/UI, frontend, backend de datos y de servicios, IA y automatizaciones, QA funcional y técnico, y delivery."
+    },
+    {
+      "name": "seguridad",
+      "source": "./plugins/seguridad",
+      "description": "Departamento de Ciberseguridad: responsable de seguridad, aplicaciones, nube y datos, pentesting, dependencias y secretos, y cumplimiento y privacidad."
+    },
     {
       "name": "marketing",
       "source": "./plugins/marketing",
@@ -18,11 +33,6 @@
       "name": "soporte",
       "source": "./plugins/soporte",
       "description": "Departamento de Soporte IT: jefatura de soporte, soporte a usuarios, infraestructura, sistemas, comunicaciones y conectividad."
-    },
-    {
-      "name": "seguridad",
-      "source": "./plugins/seguridad",
-      "description": "Departamento de Ciberseguridad: responsable de seguridad, aplicaciones, nube y datos, pentesting, dependencias y secretos, y cumplimiento y privacidad."
     },
     {
       "name": "oficina",

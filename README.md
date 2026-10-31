@@ -1,24 +1,28 @@
 # Becarios de OficiosOsIA
 
-Los departamentos de becarios de OficiosOsIA: agentes de IA para Claude Code que trabajan en los proyectos de los clientes. Es un *marketplace* de plugins con cuatro plugins (y un quinto por subir):
+Todos los becarios de OficiosOsIA: agentes de IA para Claude Code que trabajan en los proyectos de los clientes. Es un *marketplace* de seis plugins:
 
 | Plugin | Qué trae | Entrada |
 | --- | --- | --- |
+| `producto` | Product Owner, Project Manager y CTO de producto. Convierten las peticiones del panel en tareas de Notion y contestan el chat. Skill `/producto:producto`. | — |
+| `desarrollo` | CTO, diseño UX/UI, frontend, backend de datos y de servicios, IA y automatizaciones, QA funcional, QA técnico y delivery. Skill `/desarrollo:becarios`. | `cto` |
+| `seguridad` | Responsable de seguridad y cinco especialistas: aplicaciones, nube y datos, pentesting, dependencias y secretos, y cumplimiento y privacidad. Skill `/seguridad:seguridad`. | `sec-lead` |
 | `marketing` | Dirección de marketing, SEO técnico, contenidos, redes sociales, SEO local y analítica. Skill `/marketing:marketing`. | `mk-lead` |
 | `soporte` | Jefatura de soporte IT y cinco especialistas: soporte a usuarios, infraestructura, sistemas, comunicaciones y conectividad. Skill `/soporte:soporte`. | `it-lead` |
-| `seguridad` | Responsable de seguridad y cinco especialistas: aplicaciones, nube y datos, pentesting, dependencias y secretos, y cumplimiento y privacidad. Skill `/seguridad:seguridad`. | `sec-lead` |
 | `oficina` | El skill `encargo`, que ejecuta en la nube una tarea lanzada desde el panel, y el prompt y el script de la tarea programada. | — |
-| `desarrollo` | *(a medias)* El plugin `becarios` de desarrollo: cto, diseno, frontend, backend-datos, backend-servicios, ia-automatizacion, qa-funcional, qa-tecnico y delivery. Ya están `diseno` e `ia-automatizacion`; faltan por subir los otros siete. Ver [`plugins/desarrollo/README.md`](plugins/desarrollo/README.md). | `cto` |
 
 Cada departamento entra por su becario de entrada: él planifica, reparte y revisa, y el resto hace el trabajo. Todo termina en un **PR** que revisa y fusiona una persona.
 
+**¿Empiezas desde cero?** Sigue la guía paso a paso [`docs/puesta-en-marcha.pdf`](docs/puesta-en-marcha.pdf): cuentas, Claude Code, plugins, Notion, el panel y la primera tarea en la nube.
+
 ```
 plugins/
+├── producto/    agents/ (3) · skills/producto/
+├── desarrollo/  agents/ (9) · skills/becarios/ · reference/
+├── seguridad/   agents/ (6) · skills/seguridad/
 ├── marketing/   agents/ (6) · skills/marketing/
 ├── soporte/     agents/ (6) · skills/soporte/
-├── seguridad/   agents/ (6) · skills/seguridad/
-├── oficina/     skills/encargo/ · rutina/prompt.md · rutina/setup.sh
-└── desarrollo/  agents/ (diseno, ia-automatizacion; faltan los otros 7) · README.md
+└── oficina/     skills/encargo/ · rutina/prompt.md · rutina/setup.sh
 ```
 
 ## Usarlos en tu ordenador
@@ -27,16 +31,21 @@ En Claude Code:
 
 ```
 /plugin marketplace add oficiososia/becarios
+/plugin install producto@oficiososia
+/plugin install desarrollo@oficiososia
+/plugin install seguridad@oficiososia
 /plugin install marketing@oficiososia
 /plugin install soporte@oficiososia
-/plugin install seguridad@oficiososia
+/plugin install oficina@oficiososia
 ```
 
-Después, en la copia del repositorio del proyecto:
+Después:
 
+- `/producto:producto` (desde cualquier carpeta): contesta el chat del panel y convierte las peticiones pendientes en tareas de Notion, cuando dices «sí». También `/producto:producto chat` o `/producto:producto <URL de una petición>`.
+- `/desarrollo:becarios <URL de la tarea de Notion>`, en la copia del repositorio del proyecto (sin URL, coge la siguiente tarea del CTO): plan del CTO, diseño, desarrollo con pruebas, DEMO en la preview, QA, revisión y, cuando dices «sí», PR. A producción, solo si lo pides después de fusionar.
+- `/seguridad:seguridad <URL de la tarea de Notion>`: modelo de amenazas y alcance del responsable de seguridad, auditoría de los especialistas, veredicto y, cuando dices «sí», PR con los arreglos probados y una subtarea por cada hallazgo pendiente.
 - `/marketing:marketing <URL de la tarea de Notion>`: plan de la dirección, producción, revisión y, cuando dices «sí», PR.
 - `/soporte:soporte <URL de la tarea de Notion>`: diagnóstico de la jefatura, intervención de los especialistas, veredicto y, cuando dices «sí», PR con el informe y lo pendiente de una persona.
-- `/seguridad:seguridad <URL de la tarea de Notion>`: modelo de amenazas y alcance del responsable de seguridad, auditoría de los especialistas, veredicto y, cuando dices «sí», PR con los arreglos probados y una subtarea por cada hallazgo pendiente.
 
 Hace falta Notion conectado (el conector de Claude o el servidor MCP; compruébalo con `/mcp`). Para actualizar: `/plugin marketplace update oficiososia`.
 

@@ -1,0 +1,8 @@
+{
+  "name": "desarrollo",
+  "version": "0.1.0",
+  "description": "Departamento de desarrollo de OficiosOsIA: CTO, diseño UX/UI, frontend, backend de datos y de servicios, IA y automatizaciones, QA funcional y técnico, y delivery. Lleva cada tarea de Notion del plan al PR.",
+  "author": { "name": "OficiosOsIA" },
+  "repository": "https://github.com/oficiososia/becarios",
+  "keywords": ["desarrollo", "becarios", "frontend", "backend", "qa", "vercel", "supabase"]
+}
