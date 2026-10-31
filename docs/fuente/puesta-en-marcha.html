@@ -66,6 +66,12 @@
   .indice li { margin-bottom: 1.5mm; }
   .kbd { font-family: 'JetBrains Mono'; font-size: 0.85em; border: 1px solid #bbb6aa; border-bottom-width: 2px; border-radius: 1mm; padding: 0 1.2mm; background: #fff; }
   .nobreak { break-inside: avoid; }
+  .compacto { font-size: 9pt; line-height: 1.4; }
+  .compacto h3 { font-size: 11pt; margin: 3mm 0 1mm; }
+  .compacto ul { margin: 0 0 1.5mm; }
+  .compacto li { margin-bottom: 0.2mm; }
+  .compacto table { font-size: 8.6pt; }
+  .compacto th, .compacto td { padding: 1.2mm 2mm; }
 </style>
 </head>
 <body>
@@ -131,6 +137,7 @@
   <table>
     <tr><th>Departamento</th><th>Qué hace</th><th>Quién recibe las tareas</th></tr>
     <tr><td><strong>Producto</strong></td><td>Convierte lo que pides en texto normal en tareas bien escritas en Notion.</td><td>PO, PM y CTO de producto</td></tr>
+    <tr><td><strong>Arranque</strong></td><td>Monta un proyecto nuevo desde cero: arquitectura, base de código, entornos, diseño base y calidad.</td><td>Jefatura de arranque</td></tr>
     <tr><td><strong>Desarrollo</strong></td><td>Diseña, programa, prueba y prepara despliegues.</td><td>CTO</td></tr>
     <tr><td><strong>Ciberseguridad</strong></td><td>Audita, prueba y protege: código, nube, datos y RGPD.</td><td>Responsable de seguridad</td></tr>
     <tr><td><strong>Marketing</strong></td><td>SEO, contenidos, redes sociales, SEO local y analítica.</td><td>Dirección de marketing</td></tr>
@@ -394,6 +401,23 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
   </ul>
 </section>
 
+<section class="capitulo">
+  <h3 style="margin-top:0">7.6 · Un proyecto nuevo, desde cero (equipo de Arranque)</h3>
+  <p>Cuando entra un cliente nuevo, el equipo de <strong>Arranque</strong> monta la base del proyecto: arquitectura, estructura del código, entornos, CI, sistema de diseño, esquema de datos con permisos, pruebas y documentación. Termina con un PR y con el <strong>backlog del MVP</strong> como tareas en Notion, listas para Desarrollo.</p>
+  <ol class="pasos">
+    <li><strong>Crea el repositorio</strong> en GitHub (en <span class="mono">oficiososia</span> o en la cuenta del cliente) con un <strong>README</strong>: tiene que tener al menos un commit. Los becarios nunca crean repositorios, cuentas ni proyectos.</li>
+    <li>Si el proyecto los va a usar, crea el proyecto en <strong>Vercel</strong> (conectado a ese repositorio) y en <strong>Supabase</strong>.</li>
+    <li>En Notion, añade una fila en <strong>Proyectos</strong> (página «Panel OficiosOsIA»): <strong>Nombre</strong>, <strong>Proyecto en tareas</strong> (el texto que llevarán sus tareas) y <strong>Repositorio</strong>.</li>
+    <li>En el panel aparece su oficina. Pulsa <strong>Equipo</strong> y activa <strong>Arranque</strong> y <strong>Desarrollo</strong> (y los demás departamentos que quieras).</li>
+    <li>Conecta el proyecto con tu Claude: <strong>capítulo 5 entero</strong> (entorno, tarea programada y conexión).</li>
+    <li>Crea en Notion una tarea «Arrancar &lt;proyecto&gt;» con el encargo del cliente: qué negocio es, qué quiere, qué secciones, referencias y qué tiene ya (logo, textos, fotos).</li>
+    <li>En la oficina, <strong>Asignar tareas</strong> → márcala → departamento <strong>Arranque</strong> → «lanzar en la nube».</li>
+    <li>Revisa el PR (es grande): la estructura, la preview, el <span class="mono">README</span> y <span class="mono">docs/arranque/traspaso.md</span>, donde se explica qué está hecho, qué es provisional y qué falta. Fusiónalo.</li>
+    <li>Las tareas del MVP aparecen en <strong>Inbox</strong> de ese proyecto: asígnalas a <strong>Desarrollo</strong>. Cuando ya no haga falta, quita Arranque del equipo de la oficina.</li>
+  </ol>
+  <div class="caja aviso"><p>Si el repositorio ya tiene código de verdad, Arranque se para y te dice que lo lleve Desarrollo: no rehace proyectos que ya existen, salvo que la tarea lo pida expresamente.</p></div>
+</section>
+
 <!-- 8 -->
 <section class="capitulo salto">
   <h2><span class="num">8</span>Claude Code en tu ordenador <span class="etq">opcional</span></h2>
@@ -414,6 +438,7 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
   <p>Dentro de Claude Code, escribe estas líneas una a una, pulsando <span class="kbd">Intro</span> después de cada una:</p>
 <pre>/plugin marketplace add oficiososia/becarios
 /plugin install producto@oficiososia
+/plugin install arranque@oficiososia
 /plugin install desarrollo@oficiososia
 /plugin install seguridad@oficiososia
 /plugin install marketing@oficiososia
@@ -425,16 +450,17 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
   <h3>8.3 · Notion en Claude Code</h3>
   <p>Si ya conectaste Notion en claude.ai (capítulo 4.2), Claude Code lo usa solo. Compruébalo escribiendo <span class="mono">/mcp</span>: debe salir Notion como conectado. Si no sale, conéctalo desde ahí.</p>
 
-  <h3>8.4 · Los comandos</h3>
+  <div class="nobreak"><h3>8.4 · Los comandos</h3>
   <table>
     <tr><th>Comando</th><th>Qué hace</th></tr>
     <tr><td><span class="mono">/producto:producto</span></td><td>Contesta el chat del panel y convierte las peticiones pendientes en tareas de Notion. Te pide confirmación antes de crearlas.</td></tr>
     <tr><td><span class="mono">/producto:producto chat</span></td><td>Solo contesta el chat.</td></tr>
+    <tr><td><span class="mono">/arranque:arranque &lt;URL&gt;</span></td><td>Monta la base de un proyecto nuevo (repositorio casi vacío).</td></tr>
     <tr><td><span class="mono">/desarrollo:becarios &lt;URL de la tarea&gt;</span></td><td>El equipo de desarrollo trabaja una tarea en tu ordenador, en la carpeta del proyecto.</td></tr>
     <tr><td><span class="mono">/seguridad:seguridad &lt;URL&gt;</span></td><td>Auditoría de seguridad de una tarea.</td></tr>
     <tr><td><span class="mono">/marketing:marketing &lt;URL&gt;</span></td><td>Trabajo de marketing de una tarea.</td></tr>
     <tr><td><span class="mono">/soporte:soporte &lt;URL&gt;</span></td><td>Diagnóstico de una incidencia.</td></tr>
-  </table>
+  </table></div>
   <div class="caja info"><p>Para los comandos de un proyecto, abre Claude Code <strong>dentro de la carpeta de ese proyecto</strong> (<span class="mono">git clone</span> del repo y <span class="mono">cd</span> a la carpeta). La URL de la tarea es la de su página en Notion (Compartir → Copiar enlace).</p></div>
 </section>
 
@@ -486,11 +512,22 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
 </section>
 
 <!-- ANEXO A -->
-<section class="capitulo salto">
+<section class="capitulo salto compacto">
   <h2><span class="num">A</span>Los becarios</h2>
-  <p>27 becarios en 4 departamentos, más el equipo de producto. La <strong>entrada</strong> de cada departamento (en negrita) recibe las tareas, hace el plan y reparte.</p>
+  <p>35 becarios en 5 departamentos, más el equipo de producto. La <strong>entrada</strong> de cada departamento (en negrita) recibe las tareas, hace el plan y reparte.</p>
   <div class="dos">
     <div>
+      <h3>Arranque <span class="etq">proyectos nuevos</span></h3>
+      <ul>
+        <li><strong>Jefatura de arranque</strong> · arquitectura, plan y revisión</li>
+        <li>Análisis y alcance · MVP, mapa web y contenidos</li>
+        <li>Plataforma y DevOps · repo, entornos y CI/CD</li>
+        <li>Sistema de diseño · tokens y componentes base</li>
+        <li>Frontend base · esqueleto, rutas, SEO base</li>
+        <li>Backend base · esquema, autenticación y permisos</li>
+        <li>Calidad desde el día 1 · pruebas y controles en CI</li>
+        <li>Documentación y traspaso · README, CLAUDE.md</li>
+      </ul>
       <h3>Desarrollo</h3>
       <ul>
         <li><strong>CTO</strong> · plan técnico, reparto y revisión del PR</li>
@@ -503,6 +540,8 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
         <li>QA técnico · integración, API y regresión</li>
         <li>Delivery · despliegues y registro en Notion</li>
       </ul>
+    </div>
+    <div>
       <h3>Ciberseguridad</h3>
       <ul>
         <li><strong>Responsable de seguridad</strong> · riesgos y veredicto</li>
@@ -512,8 +551,6 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
         <li>Dependencias y secretos · librerías y claves filtradas</li>
         <li>Cumplimiento y privacidad · RGPD, cookies, brechas</li>
       </ul>
-    </div>
-    <div>
       <h3>Marketing</h3>
       <ul>
         <li><strong>Dirección de marketing</strong> · posicionamiento y plan</li>
@@ -543,6 +580,7 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
   <div class="nobreak"><h3>Fases de cada departamento</h3>
   <table>
     <tr><th>Departamento</th><th>Fases en Notion</th></tr>
+    <tr><td>Arranque</td><td>Preparación → Cimientos → PR y revisión</td></tr>
     <tr><td>Desarrollo</td><td>Preparación → Desarrollo y unitarias → Despliegue DEMO → QA DEMO → PR y revisión (→ Despliegue PROD → QA PROD, siempre a mano)</td></tr>
     <tr><td>Ciberseguridad</td><td>Preparación → Auditoría → PR y revisión</td></tr>
     <tr><td>Marketing</td><td>Preparación → Producción → PR y revisión</td></tr>

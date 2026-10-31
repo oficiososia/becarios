@@ -1,10 +1,11 @@
 # Becarios de OficiosOsIA
 
-Todos los becarios de OficiosOsIA: agentes de IA para Claude Code que trabajan en los proyectos de los clientes. Es un *marketplace* de seis plugins:
+Todos los becarios de OficiosOsIA: agentes de IA para Claude Code que trabajan en los proyectos de los clientes. Es un *marketplace* de siete plugins:
 
 | Plugin | Qué trae | Entrada |
 | --- | --- | --- |
 | `producto` | Product Owner, Project Manager y CTO de producto. Convierten las peticiones del panel en tareas de Notion y contestan el chat. Skill `/producto:producto`. | — |
+| `arranque` | El equipo de desarrollo completo para proyectos que empiezan desde cero: Jefatura de arranque, análisis y alcance, plataforma y DevOps, sistema de diseño, frontend base, backend base, calidad y documentación. Skill `/arranque:arranque`. | `ar-lead` |
 | `desarrollo` | CTO, diseño UX/UI, frontend, backend de datos y de servicios, IA y automatizaciones, QA funcional, QA técnico y delivery. Skill `/desarrollo:becarios`. | `cto` |
 | `seguridad` | Responsable de seguridad y cinco especialistas: aplicaciones, nube y datos, pentesting, dependencias y secretos, y cumplimiento y privacidad. Skill `/seguridad:seguridad`. | `sec-lead` |
 | `marketing` | Dirección de marketing, SEO técnico, contenidos, redes sociales, SEO local y analítica. Skill `/marketing:marketing`. | `mk-lead` |
@@ -18,6 +19,7 @@ Cada departamento entra por su becario de entrada: él planifica, reparte y revi
 ```
 plugins/
 ├── producto/    agents/ (3) · skills/producto/
+├── arranque/    agents/ (8) · skills/arranque/
 ├── desarrollo/  agents/ (9) · skills/becarios/ · reference/
 ├── seguridad/   agents/ (6) · skills/seguridad/
 ├── marketing/   agents/ (6) · skills/marketing/
@@ -32,6 +34,7 @@ En Claude Code:
 ```
 /plugin marketplace add oficiososia/becarios
 /plugin install producto@oficiososia
+/plugin install arranque@oficiososia
 /plugin install desarrollo@oficiososia
 /plugin install seguridad@oficiososia
 /plugin install marketing@oficiososia
@@ -42,12 +45,24 @@ En Claude Code:
 Después:
 
 - `/producto:producto` (desde cualquier carpeta): contesta el chat del panel y convierte las peticiones pendientes en tareas de Notion, cuando dices «sí». También `/producto:producto chat` o `/producto:producto <URL de una petición>`.
+- `/arranque:arranque <URL de la tarea de Notion>`, en la copia del repositorio recién creado: la Jefatura de arranque elige el stack y planifica, el equipo monta los cimientos (plataforma y CI, sistema de diseño, frontend y backend base, calidad, documentación), la Jefatura revisa y, cuando dices «sí», PR con todo el esqueleto y el backlog del MVP como tareas nuevas en Notion.
 - `/desarrollo:becarios <URL de la tarea de Notion>`, en la copia del repositorio del proyecto (sin URL, coge la siguiente tarea del CTO): plan del CTO, diseño, desarrollo con pruebas, DEMO en la preview, QA, revisión y, cuando dices «sí», PR. A producción, solo si lo pides después de fusionar.
 - `/seguridad:seguridad <URL de la tarea de Notion>`: modelo de amenazas y alcance del responsable de seguridad, auditoría de los especialistas, veredicto y, cuando dices «sí», PR con los arreglos probados y una subtarea por cada hallazgo pendiente.
 - `/marketing:marketing <URL de la tarea de Notion>`: plan de la dirección, producción, revisión y, cuando dices «sí», PR.
 - `/soporte:soporte <URL de la tarea de Notion>`: diagnóstico de la jefatura, intervención de los especialistas, veredicto y, cuando dices «sí», PR con el informe y lo pendiente de una persona.
 
 Hace falta Notion conectado (el conector de Claude o el servidor MCP; compruébalo con `/mcp`). Para actualizar: `/plugin marketplace update oficiososia`.
+
+## Cuando un proyecto empieza
+
+Para un proyecto nuevo se usa el departamento de **Arranque**: deja en un solo PR los cimientos (arquitectura, plataforma, sistema de diseño, frontend y backend base, calidad y documentación) y el backlog del MVP como tareas en Notion. Después, el día a día lo lleva Desarrollo. El equipo **no crea** repositorios, cuentas, proyectos ni nada que se pague; antes de lanzarlo, una persona:
+
+1. Crea el repositorio en GitHub con al menos un commit (por ejemplo, un README inicial).
+2. Si se van a usar, crea los proyectos de Vercel y Supabase (o los deja para después: el arranque deja los pasos escritos).
+3. Añade el proyecto a la base Proyectos de Notion con su `Repositorio` y el departamento de Arranque en el equipo, y crea la tarea de arranque (por ejemplo, «Arranque de la web de …», con lo que quiere el cliente).
+4. La lanza desde el panel (departamento Arranque) o con `/arranque:arranque <URL>` en una copia del repositorio.
+
+Si el repositorio ya tiene código real, la Jefatura de arranque lo dirá y recomendará pasar la tarea a Desarrollo.
 
 ## Cómo funciona en la nube
 
@@ -56,7 +71,7 @@ Desde el panel de OficiosOsIA asignas una tarea a un departamento de una oficina
 1. El panel manda el encargo (`ENCARGO OFICIOSOSIA v1`: la tarea de Notion, el departamento, el equipo y quién la lanza).
 2. La tarea programada abre una sesión en la nube con el repositorio del proyecto, clona este repositorio en `~/becarios` y sigue [`plugins/oficina/skills/encargo/SKILL.md`](plugins/oficina/skills/encargo/SKILL.md).
 3. El departamento trabaja la tarea en una rama `claude/<departamento>-<slug>` y abre el PR. Vercel crea la preview del PR, que hace de DEMO.
-4. La tarea de Notion queda en `PR y revisión`, `En espera`, con el enlace del PR. Los hallazgos de seguridad que no se arreglan en el PR, como subtareas (con los detalles solo en Notion si el repositorio es público). En soporte, lo que exige entrar en una cuenta (DNS, dominio, correo, router) queda como «Pendiente de una persona», con los pasos exactos.
+4. La tarea de Notion queda en `PR y revisión`, `En espera`, con el enlace del PR. En arranque, el backlog del MVP se crea como tareas nuevas en Inbox. Los hallazgos de seguridad que no se arreglan en el PR, como subtareas (con los detalles solo en Notion si el repositorio es público). En soporte, lo que exige entrar en una cuenta (DNS, dominio, correo, router) queda como «Pendiente de una persona», con los pasos exactos.
 5. Tú revisas el PR y lo fusionas. La sesión de la nube nunca fusiona, nunca despliega a producción y nunca escribe en bases de datos de producción.
 
 Puedes seguir la sesión en directo, o contestar si se queda esperando, desde [claude.ai/code](https://claude.ai/code) o la app de Claude: el panel enseña su enlace.
@@ -135,6 +150,7 @@ Si generas un token nuevo, el anterior deja de valer: vuelve a pegarlo en el pan
 
 - Fusionar PR, desplegar a producción o promocionar despliegues.
 - Aplicar migraciones o escribir en bases de datos de producción.
+- Crear repositorios, cuentas, proyectos de Vercel o Supabase, dominios o cualquier cosa que se pague.
 - Cambiar variables de entorno de producción, dominios o DNS, ni tocar routers, buzones de correo o cuentas de usuario.
 - Pedir o escribir contraseñas, o ejecutar comandos destructivos.
 - Hacer pruebas de seguridad fuera del alcance: solo el repositorio, el build local, la preview y la DEMO del proyecto; producción, solo con una URL autorizada por escrito en la tarea; nunca terceros, denegación de servicio, fuerza bruta ni ingeniería social.

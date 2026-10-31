@@ -5,14 +5,19 @@
     "url": "https://github.com/oficiososia"
   },
   "metadata": {
-    "description": "Todos los becarios de OficiosOsIA: producto, desarrollo, ciberseguridad, marketing, soporte IT y la oficina en la nube que ejecuta las tareas del panel hasta el PR.",
-    "version": "0.2.0"
+    "description": "Todos los becarios de OficiosOsIA: producto, arranque de proyectos, desarrollo, ciberseguridad, marketing, soporte IT y la oficina en la nube que ejecuta las tareas del panel hasta el PR.",
+    "version": "0.3.0"
   },
   "plugins": [
     {
       "name": "producto",
       "source": "./plugins/producto",
       "description": "Equipo de producto: Product Owner, Project Manager y CTO de producto. Convierte las peticiones del panel en tareas de Notion y contesta el chat."
+    },
+    {
+      "name": "arranque",
+      "source": "./plugins/arranque",
+      "description": "Departamento de Arranque: el equipo de desarrollo completo para proyectos que empiezan desde cero. Jefatura de arranque, análisis y alcance, plataforma y DevOps, sistema de diseño, frontend y backend base, calidad y documentación."
     },
     {
       "name": "desarrollo",

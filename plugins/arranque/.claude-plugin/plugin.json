@@ -1,0 +1,8 @@
+{
+  "name": "arranque",
+  "version": "0.1.0",
+  "description": "Departamento de Arranque de OficiosOsIA: el equipo de desarrollo completo para proyectos que empiezan desde cero. Deja en un PR el esqueleto listo para trabajar (arquitectura, plataforma, sistema de diseño, frontend y backend base, calidad y documentación) y el backlog del MVP en Notion.",
+  "author": { "name": "OficiosOsIA" },
+  "repository": "https://github.com/oficiososia/becarios",
+  "keywords": ["arranque", "kickoff", "mvp", "arquitectura", "esqueleto", "vite", "supabase", "vercel"]
+}
