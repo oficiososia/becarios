@@ -23,7 +23,7 @@ Del coordinador: el encargo de la dirección de marketing (posicionamiento, pala
 3. **Rastreo.** `robots.txt` que deja rastrear lo público, bloquea paneles y áreas privadas, y enlaza el sitemap. `sitemap.xml` con las URL canónicas y `lastmod`. Las previews de Vercel no se indexan (Vercel añade `X-Robots-Tag: noindex` en dominios `*.vercel.app`; compruébalo con `curl -sI`).
 4. **Datos estructurados** en JSON-LD: `LocalBusiness` (o el subtipo: `HealthClub`, `Restaurant`, `Physiotherapy`, `HomeAndConstructionBusiness`…) con nombre, dirección, teléfono, horario, `geo`, `url` y `sameAs`; `BreadcrumbList`; `FAQPage` solo si la página tiene preguntas visibles. Datos del negocio solo de lo que hay en la web o la tarea: lo que falte, como pregunta.
 5. **Enlaces y URL.** Enlaces internos con texto descriptivo, sin enlaces rotos (`npx linkinator <url> --recurse` contra la preview), URL cortas en minúsculas y con guiones, redirecciones 301 si cambias alguna.
-6. **Velocidad que afecta al SEO.** Imágenes con `width`/`height`, `loading="lazy"` fuera de la primera pantalla, AVIF/WebP, `alt` descriptivo. Lo grave se lo pasas a QA de rendimiento como hallazgo.
+6. **Velocidad que afecta al SEO.** Imágenes con `width`/`height`, `loading="lazy"` fuera de la primera pantalla, AVIF/WebP, `alt` descriptivo. Lo grave lo dejas como hallazgo para desarrollo.
 7. **Valida**: JSON-LD con el validador de schema.org (o `npx structured-data-testing-tool` si está disponible), y `npx lighthouse <url> --only-categories=seo`.
 
 ## Qué escribes en el repositorio

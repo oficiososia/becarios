@@ -1,7 +1,7 @@
 {
   "name": "oficina",
   "version": "0.1.0",
-  "description": "La oficina en la nube de OficiosOsIA: ejecuta una tarea lanzada desde el panel con el departamento que toca (desarrollo, QA o marketing) hasta dejar el PR listo para revisar.",
+  "description": "La oficina en la nube de OficiosOsIA: ejecuta una tarea lanzada desde el panel con el departamento que toca (desarrollo, marketing, soporte IT o ciberseguridad) hasta dejar el PR listo para revisar.",
   "author": { "name": "OficiosOsIA" },
   "repository": "https://github.com/oficiososia/becarios",
   "keywords": ["oficina", "encargo", "nube", "tareas programadas"]

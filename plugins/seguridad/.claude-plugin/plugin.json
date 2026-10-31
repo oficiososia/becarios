@@ -1,0 +1,8 @@
+{
+  "name": "seguridad",
+  "version": "0.1.0",
+  "description": "Departamento de Ciberseguridad de OficiosOsIA: modelo de amenazas, seguridad de aplicaciones, nube y datos, pentesting autorizado sobre la DEMO, dependencias y secretos, RGPD y respuesta a incidentes. Entrega el informe, los arreglos probados y los runbooks en un PR.",
+  "author": { "name": "OficiosOsIA" },
+  "repository": "https://github.com/oficiososia/becarios",
+  "keywords": ["seguridad", "ciberseguridad", "owasp", "pentesting", "rgpd", "secretos"]
+}

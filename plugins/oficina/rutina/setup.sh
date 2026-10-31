@@ -23,12 +23,12 @@ fi
 instalar_npm vercel vercel
 instalar_npm supabase supabase
 
-# Navegadores para las pruebas E2E de QA. Solo Chromium, que es lo más usado; los demás los
-# instala QA visual cuando los necesita. Si falla (sin red o sin permisos), se sigue igual.
+# Navegador para las pruebas E2E (QA de desarrollo y comprobaciones de seguridad en la preview).
+# Solo Chromium, que es lo más usado. Si falla (sin red o sin permisos), se sigue igual.
 if npx --yes playwright --version >/dev/null 2>&1; then
   npx --yes playwright install --with-deps chromium >/dev/null 2>&1 \
     && echo "· Chromium para Playwright listo" \
-    || echo "· No se ha podido instalar Chromium para Playwright: QA lo intentará en la sesión"
+    || echo "· No se ha podido instalar Chromium para Playwright: se intentará en la sesión"
 fi
 
 echo "· Entorno de OficiosOsIA preparado"

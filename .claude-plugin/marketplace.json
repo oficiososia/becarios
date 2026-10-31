@@ -5,15 +5,10 @@
     "url": "https://github.com/oficiososia"
   },
   "metadata": {
-    "description": "Los departamentos de becarios de OficiosOsIA: QA, marketing, soporte IT y la oficina en la nube que ejecuta las tareas del panel hasta el PR.",
+    "description": "Los departamentos de becarios de OficiosOsIA: marketing, soporte IT, ciberseguridad y la oficina en la nube que ejecuta las tareas del panel hasta el PR.",
     "version": "0.1.0"
   },
   "plugins": [
-    {
-      "name": "qa",
-      "source": "./plugins/qa",
-      "description": "Departamento de QA: jefa de QA y seis perfiles (automatización, accesibilidad, rendimiento, seguridad, visual y exploratorio)."
-    },
     {
       "name": "marketing",
       "source": "./plugins/marketing",
@@ -23,6 +18,11 @@
       "name": "soporte",
       "source": "./plugins/soporte",
       "description": "Departamento de Soporte IT: jefatura de soporte, soporte a usuarios, infraestructura, sistemas, comunicaciones y conectividad."
+    },
+    {
+      "name": "seguridad",
+      "source": "./plugins/seguridad",
+      "description": "Departamento de Ciberseguridad: responsable de seguridad, aplicaciones, nube y datos, pentesting, dependencias y secretos, cumplimiento y privacidad, y detección y respuesta."
     },
     {
       "name": "oficina",
