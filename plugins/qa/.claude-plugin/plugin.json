@@ -1,0 +1,8 @@
+{
+  "name": "qa",
+  "version": "0.1.0",
+  "description": "Departamento de QA de OficiosOsIA: plan de pruebas, pruebas E2E, accesibilidad, rendimiento, seguridad, visual y exploratorio. Entrega pruebas e informe en un PR.",
+  "author": { "name": "OficiosOsIA" },
+  "repository": "https://github.com/oficiososia/becarios",
+  "keywords": ["qa", "pruebas", "playwright", "accesibilidad", "seguridad"]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "marketing",
+  "version": "0.1.0",
+  "description": "Departamento de marketing de OficiosOsIA: posicionamiento, SEO técnico, contenidos, redes sociales, SEO local y analítica. Entrega cambios y contenidos en un PR.",
+  "author": { "name": "OficiosOsIA" },
+  "repository": "https://github.com/oficiososia/becarios",
+  "keywords": ["marketing", "seo", "contenidos", "redes sociales", "seo local"]
+}

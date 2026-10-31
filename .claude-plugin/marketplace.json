@@ -1,0 +1,28 @@
+{
+  "name": "oficiososia",
+  "owner": {
+    "name": "OficiosOsIA",
+    "url": "https://github.com/oficiososia"
+  },
+  "metadata": {
+    "description": "Los departamentos de becarios de OficiosOsIA: QA, marketing y la oficina en la nube que ejecuta las tareas del panel hasta el PR.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "qa",
+      "source": "./plugins/qa",
+      "description": "Departamento de QA: jefa de QA y seis perfiles (automatización, accesibilidad, rendimiento, seguridad, visual y exploratorio)."
+    },
+    {
+      "name": "marketing",
+      "source": "./plugins/marketing",
+      "description": "Departamento de marketing: dirección, SEO técnico, contenidos, redes sociales, SEO local y analítica."
+    },
+    {
+      "name": "oficina",
+      "source": "./plugins/oficina",
+      "description": "La oficina en la nube: el skill encargo, que ejecuta una tarea lanzada desde el panel con el departamento que toca hasta dejar el PR listo."
+    }
+  ]
+}
