@@ -6,7 +6,7 @@ Los departamentos de becarios de OficiosOsIA: agentes de IA para Claude Code que
 | --- | --- | --- |
 | `marketing` | Dirección de marketing, SEO técnico, contenidos, redes sociales, SEO local y analítica. Skill `/marketing:marketing`. | `mk-lead` |
 | `soporte` | Jefatura de soporte IT y cinco especialistas: soporte a usuarios, infraestructura, sistemas, comunicaciones y conectividad. Skill `/soporte:soporte`. | `it-lead` |
-| `seguridad` | Responsable de seguridad y seis especialistas: aplicaciones, nube y datos, pentesting, dependencias y secretos, cumplimiento y privacidad, y detección y respuesta. Skill `/seguridad:seguridad`. | `sec-lead` |
+| `seguridad` | Responsable de seguridad y cinco especialistas: aplicaciones, nube y datos, pentesting, dependencias y secretos, y cumplimiento y privacidad. Skill `/seguridad:seguridad`. | `sec-lead` |
 | `oficina` | El skill `encargo`, que ejecuta en la nube una tarea lanzada desde el panel, y el prompt y el script de la tarea programada. | — |
 | `desarrollo` | *(a medias)* El plugin `becarios` de desarrollo: cto, diseno, frontend, backend-datos, backend-servicios, ia-automatizacion, qa-funcional, qa-tecnico y delivery. Ya están `diseno` e `ia-automatizacion`; faltan por subir los otros siete. Ver [`plugins/desarrollo/README.md`](plugins/desarrollo/README.md). | `cto` |
 
@@ -16,7 +16,7 @@ Cada departamento entra por su becario de entrada: él planifica, reparte y revi
 plugins/
 ├── marketing/   agents/ (6) · skills/marketing/
 ├── soporte/     agents/ (6) · skills/soporte/
-├── seguridad/   agents/ (7) · skills/seguridad/
+├── seguridad/   agents/ (6) · skills/seguridad/
 ├── oficina/     skills/encargo/ · rutina/prompt.md · rutina/setup.sh
 └── desarrollo/  agents/ (diseno, ia-automatizacion; faltan los otros 7) · README.md
 ```

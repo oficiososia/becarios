@@ -1,6 +1,6 @@
 ---
 name: seguridad
-description: "Llama al departamento de Ciberseguridad en tu Claude Code para una tarea de Notion: la persona responsable de seguridad hace el modelo de amenazas y fija el alcance, los especialistas auditan (aplicaciones, nube y datos, pentesting, dependencias y secretos, cumplimiento, detección y respuesta) y el responsable da el veredicto. Deja el informe, los arreglos probados y los runbooks en una rama y pregunta antes de abrir el PR."
+description: "Llama al departamento de Ciberseguridad en tu Claude Code para una tarea de Notion: la persona responsable de seguridad hace el modelo de amenazas y fija el alcance, los especialistas auditan (aplicaciones, nube y datos, pentesting, dependencias y secretos, cumplimiento y privacidad) y el responsable da el veredicto. Deja el informe, los arreglos probados y los runbooks en una rama y pregunta antes de abrir el PR."
 argument-hint: "<URL de la tarea de Notion>"
 disable-model-invocation: true
 ---
@@ -12,7 +12,7 @@ Encargo: $ARGUMENTS. Tiene que ser la URL (o el id) de una tarea de Notion de la
 Es el mismo flujo de seguridad que hace la oficina en la nube (`plugins/oficina/skills/encargo/SKILL.md`, departamento `seguridad`), pero en tu ordenador y contigo delante: **preguntas antes de abrir el PR**. Tú coordinas: el modelo de amenazas, la auditoría y el veredicto los hacen los agentes.
 
 - `sec-lead`: modelo de amenazas, alcance y reglas, reparto y veredicto final. Solo planifica y revisa.
-- `sec-aplicaciones`, `sec-nube`, `sec-pentest`, `sec-dependencias`, `sec-cumplimiento` y `sec-respuesta`: auditan, demuestran cada hallazgo, arreglan lo pequeño y seguro con su prueba y escriben runbooks.
+- `sec-aplicaciones`, `sec-nube`, `sec-pentest`, `sec-dependencias` y `sec-cumplimiento`: auditan, demuestran cada hallazgo, arreglan lo pequeño y seguro con su prueba y escriben runbooks.
 
 En el plugin, los agentes se llaman `seguridad:<id>` (por ejemplo, `seguridad:sec-lead`).
 

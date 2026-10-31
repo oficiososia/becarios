@@ -22,7 +22,7 @@
     {
       "name": "seguridad",
       "source": "./plugins/seguridad",
-      "description": "Departamento de Ciberseguridad: responsable de seguridad, aplicaciones, nube y datos, pentesting, dependencias y secretos, cumplimiento y privacidad, y detección y respuesta."
+      "description": "Departamento de Ciberseguridad: responsable de seguridad, aplicaciones, nube y datos, pentesting, dependencias y secretos, y cumplimiento y privacidad."
     },
     {
       "name": "oficina",
