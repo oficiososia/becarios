@@ -1,0 +1,8 @@
+{
+  "name": "soporte",
+  "version": "0.1.0",
+  "description": "Departamento de Soporte IT de OficiosOsIA: diagnóstico de incidencias, infraestructura, sistemas, comunicaciones y conectividad. Entrega el informe, los arreglos seguros y las guías en un PR.",
+  "author": { "name": "OficiosOsIA" },
+  "repository": "https://github.com/oficiososia/becarios",
+  "keywords": ["soporte", "it", "infraestructura", "dns", "correo", "redes"]
+}

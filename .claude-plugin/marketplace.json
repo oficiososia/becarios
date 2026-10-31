@@ -5,7 +5,7 @@
     "url": "https://github.com/oficiososia"
   },
   "metadata": {
-    "description": "Los departamentos de becarios de OficiosOsIA: QA, marketing y la oficina en la nube que ejecuta las tareas del panel hasta el PR.",
+    "description": "Los departamentos de becarios de OficiosOsIA: QA, marketing, soporte IT y la oficina en la nube que ejecuta las tareas del panel hasta el PR.",
     "version": "0.1.0"
   },
   "plugins": [
@@ -18,6 +18,11 @@
       "name": "marketing",
       "source": "./plugins/marketing",
       "description": "Departamento de marketing: dirección, SEO técnico, contenidos, redes sociales, SEO local y analítica."
+    },
+    {
+      "name": "soporte",
+      "source": "./plugins/soporte",
+      "description": "Departamento de Soporte IT: jefatura de soporte, soporte a usuarios, infraestructura, sistemas, comunicaciones y conectividad."
     },
     {
       "name": "oficina",

@@ -1,11 +1,12 @@
 # Becarios de OficiosOsIA
 
-Los departamentos de becarios de OficiosOsIA: agentes de IA para Claude Code que trabajan en los proyectos de los clientes. Es un *marketplace* de plugins con tres plugins (y un cuarto por subir):
+Los departamentos de becarios de OficiosOsIA: agentes de IA para Claude Code que trabajan en los proyectos de los clientes. Es un *marketplace* de plugins con cuatro plugins (y un quinto por subir):
 
 | Plugin | Qué trae | Entrada |
 | --- | --- | --- |
 | `qa` | Jefa de QA y seis perfiles: automatización, accesibilidad, rendimiento, seguridad, visual y exploratorio. Skill `/qa:qa`. | `qa-lead` |
 | `marketing` | Dirección de marketing, SEO técnico, contenidos, redes sociales, SEO local y analítica. Skill `/marketing:marketing`. | `mk-lead` |
+| `soporte` | Jefatura de soporte IT y cinco especialistas: soporte a usuarios, infraestructura, sistemas, comunicaciones y conectividad. Skill `/soporte:soporte`. | `it-lead` |
 | `oficina` | El skill `encargo`, que ejecuta en la nube una tarea lanzada desde el panel, y el prompt y el script de la tarea programada. | — |
 | `desarrollo` | *(por subir)* El plugin `becarios` de desarrollo: cto, frontend, backend-datos, backend-servicios, qa-funcional, qa-tecnico y delivery. Ver [`plugins/desarrollo/README.md`](plugins/desarrollo/README.md). | `cto` |
 
@@ -15,6 +16,7 @@ Cada departamento entra por su becario de entrada: él planifica, reparte y revi
 plugins/
 ├── qa/          agents/ (7) · skills/qa/
 ├── marketing/   agents/ (6) · skills/marketing/
+├── soporte/     agents/ (6) · skills/soporte/
 ├── oficina/     skills/encargo/ · rutina/prompt.md · rutina/setup.sh
 └── desarrollo/  README.md (por subir)
 ```
@@ -27,12 +29,14 @@ En Claude Code:
 /plugin marketplace add oficiososia/becarios
 /plugin install qa@oficiososia
 /plugin install marketing@oficiososia
+/plugin install soporte@oficiososia
 ```
 
 Después, en la copia del repositorio del proyecto:
 
 - `/qa:qa <URL de la tarea de Notion>`: plan de la Jefa de QA, pruebas, veredicto y, cuando dices «sí», PR y subtareas por cada defecto.
 - `/marketing:marketing <URL de la tarea de Notion>`: plan de la dirección, producción, revisión y, cuando dices «sí», PR.
+- `/soporte:soporte <URL de la tarea de Notion>`: diagnóstico de la jefatura, intervención de los especialistas, veredicto y, cuando dices «sí», PR con el informe y lo pendiente de una persona.
 
 Hace falta Notion conectado (el conector de Claude o el servidor MCP; compruébalo con `/mcp`). Para actualizar: `/plugin marketplace update oficiososia`.
 
@@ -43,7 +47,7 @@ Desde el panel de OficiosOsIA asignas una tarea a un departamento de una oficina
 1. El panel manda el encargo (`ENCARGO OFICIOSOSIA v1`: la tarea de Notion, el departamento, el equipo y quién la lanza).
 2. La tarea programada abre una sesión en la nube con el repositorio del proyecto, clona este repositorio en `~/becarios` y sigue [`plugins/oficina/skills/encargo/SKILL.md`](plugins/oficina/skills/encargo/SKILL.md).
 3. El departamento trabaja la tarea en una rama `claude/<departamento>-<slug>` y abre el PR. Vercel crea la preview del PR, que hace de DEMO.
-4. La tarea de Notion queda en `PR y revisión`, `En espera`, con el enlace del PR. Los defectos de QA, como subtareas.
+4. La tarea de Notion queda en `PR y revisión`, `En espera`, con el enlace del PR. Los defectos de QA, como subtareas. En soporte, lo que exige entrar en una cuenta (DNS, dominio, correo, router) queda como «Pendiente de una persona», con los pasos exactos.
 5. Tú revisas el PR y lo fusionas. La sesión de la nube nunca fusiona, nunca despliega a producción y nunca escribe en bases de datos de producción.
 
 Puedes seguir la sesión en directo, o contestar si se queda esperando, desde [claude.ai/code](https://claude.ai/code) o la app de Claude: el panel enseña su enlace.
@@ -122,6 +126,7 @@ Si generas un token nuevo, el anterior deja de valer: vuelve a pegarlo en el pan
 
 - Fusionar PR, desplegar a producción o promocionar despliegues.
 - Aplicar migraciones o escribir en bases de datos de producción.
-- Cambiar variables de entorno de producción, dominios o DNS.
+- Cambiar variables de entorno de producción, dominios o DNS, ni tocar routers, buzones de correo o cuentas de usuario.
+- Pedir o escribir contraseñas, o ejecutar comandos destructivos.
 - Publicar en redes sociales o tocar cuentas de anuncios, de Google Business Profile o de analítica.
 - Escribir secretos en el código, en Notion o en el PR.
