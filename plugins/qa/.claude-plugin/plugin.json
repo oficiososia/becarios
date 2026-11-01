@@ -1,0 +1,8 @@
+{
+  "name": "qa",
+  "version": "0.1.0",
+  "description": "Departamento de QA y testers de OficiosOsIA: una escuadra de testers que intenta romper la app y demuestra cada fallo con una prueba automática, y una escuadra de usuarios simulados del negocio que usan la app en la preview para predecir dónde se atascan los clientes. Entrega pruebas, informe y veredicto en un PR.",
+  "author": { "name": "OficiosOsIA" },
+  "repository": "https://github.com/oficiososia/becarios",
+  "keywords": ["qa", "testing", "playwright", "e2e", "usabilidad", "accesibilidad", "usuarios simulados"]
+}

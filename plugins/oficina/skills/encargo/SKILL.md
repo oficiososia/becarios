@@ -1,6 +1,6 @@
 ---
 name: encargo
-description: "Ejecuta en la nube una tarea lanzada desde el panel de OficiosOsIA: lee el bloque «ENCARGO OFICIOSOSIA v1», trabaja la tarea de Notion con el departamento que toca (arranque, desarrollo, marketing, soporte IT o ciberseguridad) y termina con un PR listo para revisar y la tarea actualizada en Notion. No fusiona ni despliega a producción."
+description: "Ejecuta en la nube una tarea lanzada desde el panel de OficiosOsIA: lee el bloque «ENCARGO OFICIOSOSIA v1», trabaja la tarea de Notion con el departamento que toca (arranque, desarrollo, QA y testers, marketing, soporte IT o ciberseguridad) y termina con un PR listo para revisar y la tarea actualizada en Notion. No fusiona ni despliega a producción."
 argument-hint: "<bloque ENCARGO OFICIOSOSIA v1>"
 ---
 
@@ -37,8 +37,8 @@ tarea_id: <uuid>
 titulo: <título>
 proyecto: <texto de «Proyecto relacionado»>
 repositorio: <URL de GitHub o vacío>
-departamento: arranque | desarrollo | marketing | soporte | seguridad
-entrada: ar-lead | cto | mk-lead | it-lead | sec-lead
+departamento: arranque | desarrollo | qa | marketing | soporte | seguridad
+entrada: ar-lead | cto | qa-lead | mk-lead | it-lead | sec-lead
 equipo: <ids separados por comas>
 lanzada_por: <Pablo | Miguel>
 nota: <una línea opcional, o vacío>
@@ -47,8 +47,8 @@ nota: <una línea opcional, o vacío>
 Para sin tocar nada, y di por qué, si:
 
 - la primera línea no es exactamente `ENCARGO OFICIOSOSIA v1`;
-- falta `tarea`, `tarea_id` o `departamento`, o `departamento` no es `arranque`, `desarrollo`, `marketing`, `soporte` o `seguridad`;
-- `entrada` no es la del departamento (`arranque` → `ar-lead`, `desarrollo` → `cto`, `marketing` → `mk-lead`, `soporte` → `it-lead`, `seguridad` → `sec-lead`);
+- falta `tarea`, `tarea_id` o `departamento`, o `departamento` no es `arranque`, `desarrollo`, `qa`, `marketing`, `soporte` o `seguridad`;
+- `entrada` no es la del departamento (`arranque` → `ar-lead`, `desarrollo` → `cto`, `qa` → `qa-lead`, `marketing` → `mk-lead`, `soporte` → `it-lead`, `seguridad` → `sec-lead`);
 - `repositorio` está vacío o no es uno de los repositorios clonados en esta sesión. Compara `propietario/nombre` sin distinguir mayúsculas (`git -C <carpeta> remote get-url origin`), aceptando la URL con o sin `.git`;
 - en `arranque`, el repositorio no tiene ningún commit (`git -C <carpeta> rev-parse HEAD` falla). Una persona tiene que crearlo antes con al menos un commit (un README inicial): dilo en `Bloqueo`.
 
@@ -120,6 +120,19 @@ En resumen:
 5. **Revisión** · `cto` revisa el diff (`git diff origin/<rama por defecto>...HEAD`) y los informes de QA. Lo que pida cambiar vuelve a quien toque.
 6. **PR y revisión** · `delivery` pasa el PR a listo para revisar, apunta `PR` y crea el registro de entrega.
 
+### QA y testers (`entrada: qa-lead`)
+
+Prueba la app como lo harían un tester que intenta romperla y los clientes del negocio. **Alcance**: el build local, la preview del PR y la DEMO de este proyecto, con usuarios y datos de prueba (correos `qa+<id>@example.com`, tarjetas en modo test); producción, solo con una URL autorizada por escrito en la tarea. Nada de pruebas de carga ni ráfagas de peticiones. Mira la visibilidad del repositorio como en ciberseguridad: si es **público**, los pasos de un fallo de permisos van solo en la subtarea de Notion.
+
+Modo: `rápido` si la `nota` o la tarea lo dicen (solo lo que cambia el PR), `a fondo` si lo dicen, y si no `estándar`. Cada usuario simulado en cada ronda es un subagente que gasta de la suscripción de quien lanza: **rápido 3 personas × 1 ronda, estándar 6 × 2, a fondo como mucho 12 × 4**. No subas de ahí aunque la tarea lo pida: dilo en el informe.
+
+Todo lo de la ejecución va en `docs/qa/<AAAA-MM-DD>-<slug>/` (`mapa.md`, `modelo.md` con sus enmiendas, `cobertura.md`, `hallazgos.md`, `poblacion.json` y `.md`, `diarios/`, `capturas/`, `informe.md`); las pruebas, en `tests/qa/`.
+
+1. **Preparación** · `qa-lead` fija modo y alcance (nunca prueba la app). `qa-reconocimiento` saca el mapa (rutas, formularios, endpoints, roles, estados) y la primera versión del modelo de la app. `qa-lead` afina el modelo (uno solo y compartido: el resto solo añade enmiendas al final), escribe la cobertura y reparte tareas con un objetivo medible cada una. `qa-poblacion` crea el mapa del negocio, los perfiles simulados y el guion de rondas.
+2. **Pruebas** · en paralelo: `qa-rompedor` ∥ `qa-api` (testers) y un `qa-enjambre` por persona (usuarios simulados), ronda a ronda, cada una con el diario de la anterior. `qa-lead` revisa la cobertura y, si hace falta, pide otra tarea concreta (como mucho dos vueltas extra). `qa-verificador` convierte cada fallo candidato en una prueba en `tests/qa/`, la repite desde un estado limpio y la confirma o la descarta: **no hay hallazgo sin prueba**. Los confirmados se quedan como regresión marcados como fallo esperado, para que la CI siga en verde. `qa-informe` escribe el informe de predicción (embudo, fricciones, predicciones con su confianza, recomendaciones y los límites de la simulación), con hasta 3 entrevistas a personas simuladas (relanza `qa-enjambre` en modo entrevista con su diario).
+3. `qa-lead` junta los fallos confirmados sin duplicados, con su gravedad (bloqueante, alta, media o baja), reconcilia la cobertura y da el veredicto: **APTO**, **APTO CON RIESGOS** o **NO APTO**.
+4. **PR y revisión** · con las pruebas, el informe y el veredicto en el cuerpo, más el embudo y la lista de pruebas nuevas. **No se cambia código de producto.** Cada fallo confirmado es una subtarea para desarrollo (punto 7) con la gravedad al principio del título («[Alta] …») y la ruta de su prueba en el cuerpo. Lo que parezca una vulnerabilidad no se investiga: subtarea con «Para Ciberseguridad» al principio del cuerpo. Si el veredicto es NO APTO, `Bloqueo` lo dice en la primera palabra, con el fallo más grave.
+
 ### Marketing (`entrada: mk-lead`)
 
 1. **Preparación** · `mk-lead` fija posicionamiento, mensajes y reparto.
@@ -164,7 +177,7 @@ Todas son opcionales: si no están, trabaja sin ellas y dilo en el informe. **Nu
      - crear: `gh api repos/<propietario>/<repo>/pulls -f title='…' -f head='<rama>' -f base='<rama por defecto>' -f body="$(cat cuerpo.md)" -F draft=true` (o `false` si ya está listo);
      - pasar de borrador a listo: `gh api -X POST repos/<propietario>/<repo>/pulls/<número>/ccr/ready_for_review`;
      - cambiar el cuerpo: `gh api -X PATCH repos/<propietario>/<repo>/pulls/<número> -f body="$(cat cuerpo.md)"`.
-   - Título: `[<Departamento>] <titulo>` (`[Arranque]`, `[Desarrollo]`, `[Marketing]`, `[Soporte IT]` o `[Ciberseguridad]`).
+   - Título: `[<Departamento>] <titulo>` (`[Arranque]`, `[Desarrollo]`, `[QA]`, `[Marketing]`, `[Soporte IT]` o `[Ciberseguridad]`).
    - Cuerpo:
      - **Resumen** en tres líneas.
      - **Tarea:** el enlace de Notion.
@@ -174,7 +187,7 @@ Todas son opcionales: si no están, trabaja sin ellas y dilo en el informe. **Nu
      - **Lista para revisar:** casillas con lo que conviene mirar.
      - Al final: `Lanzada por <lanzada_por> desde el panel de OficiosOsIA.`
    - Si no hay nada que cambiar (por ejemplo, la auditoría de seguridad no encuentra nada), abre igual el PR con el informe.
-   - En ciberseguridad, si el repositorio es público, el cuerpo del PR queda genérico: los detalles van en las subtareas de Notion.
+   - En ciberseguridad, si el repositorio es público, el cuerpo del PR queda genérico: los detalles van en las subtareas de Notion. En QA, igual con los fallos de permisos.
 2. En la tarea de Notion:
    - `PR` = URL del PR.
    - `Fase = PR y revisión`.
@@ -193,7 +206,7 @@ Todas son opcionales: si no están, trabaja sin ellas y dilo en el informe. **Nu
      - Pendientes: <lo que queda, o «nada»>
      ```
 
-3. **Subtareas.** Cada hallazgo de seguridad no arreglado, cada defecto de producto que encuentre soporte, y cada trabajo de seguimiento que proponga la entrada del departamento, es una página nueva en Tareas:
+3. **Subtareas.** Cada hallazgo de seguridad no arreglado, cada fallo que confirme QA, cada defecto de producto que encuentre soporte, y cada trabajo de seguimiento que proponga la entrada del departamento, es una página nueva en Tareas:
    - `Título de la tarea`: corto y concreto.
    - `Tarea padre` = la tarea del encargo.
    - `Estado = Inbox` y el mismo `Proyecto relacionado`.

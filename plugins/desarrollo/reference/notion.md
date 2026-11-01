@@ -15,7 +15,7 @@ Usa cualquier conexión de Notion disponible: el conector de Claude o el servido
 
 - `Título de la tarea` (título) y `Proyecto relacionado` (texto, igual que `Proyecto en tareas` de Proyectos).
 - `Estado`: `Inbox`, `Por hacer`, `En progreso`, `En espera` o `Hecha`.
-- `Fase`: `Preparación`, `Desarrollo y unitarias`, `Auditoría`, `Producción`, `Intervención`, `Despliegue DEMO`, `QA DEMO`, `PR y revisión`, `Despliegue PROD`, `QA PROD` o `Cerrada`. Desarrollo usa todas menos `Auditoría` (ciberseguridad), `Producción` (marketing) e `Intervención` (soporte IT).
+- `Fase`: `Preparación`, `Cimientos`, `Desarrollo y unitarias`, `Auditoría`, `Producción`, `Intervención`, `Pruebas`, `Despliegue DEMO`, `QA DEMO`, `PR y revisión`, `Despliegue PROD`, `QA PROD` o `Cerrada`. Desarrollo usa todas menos `Cimientos` (arranque), `Auditoría` (ciberseguridad), `Producción` (marketing), `Intervención` (soporte IT) y `Pruebas` (QA y testers).
 - `Becario` (selección múltiple): quién tiene la tarea **ahora**; varios si trabajan a la vez.
 - `Bloqueo` (texto): el motivo cuando `Estado = En espera`.
 - `PR` (URL), `Versión` (SHA corto del commit), `Prioridad`, `Tipo de tarea`, `Estimación (horas)`, `Área` y `Notas`.
@@ -29,7 +29,9 @@ Una tarea con `Tarea padre` es una **subtarea**: el panel no la enseña (ni en l
 
 Antes de empezar cualquier tarea, busca tu fila en la base «Becarios» (data source `7d90c32f-ede0-42ca-8732-2c80134f885b`): la que tiene en la columna `Id` tu nombre de agente. Los ids, por departamento:
 
+- Arranque: `ar-lead`, `ar-analisis`, `ar-plataforma`, `ar-diseno`, `ar-frontend`, `ar-backend`, `ar-calidad`, `ar-documentacion`.
 - Desarrollo: `cto`, `diseno`, `frontend`, `backend-datos`, `backend-servicios`, `ia-automatizacion`, `qa-funcional`, `qa-tecnico`, `delivery`.
+- QA y testers: `qa-lead`, `qa-reconocimiento`, `qa-rompedor`, `qa-api`, `qa-verificador`, `qa-poblacion`, `qa-enjambre`, `qa-informe`.
 - Ciberseguridad: `sec-lead`, `sec-aplicaciones`, `sec-nube`, `sec-pentest`, `sec-dependencias`, `sec-cumplimiento`.
 - Marketing: `mk-lead`, `mk-seo`, `mk-contenidos`, `mk-rrss`, `mk-local`, `mk-analitica`.
 - Soporte IT: `it-lead`, `it-soporte`, `it-infraestructura`, `it-sistemas`, `it-comunicaciones`, `it-conectividad`.

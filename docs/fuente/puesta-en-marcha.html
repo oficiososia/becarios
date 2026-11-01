@@ -139,6 +139,7 @@
     <tr><td><strong>Producto</strong></td><td>Convierte lo que pides en texto normal en tareas bien escritas en Notion.</td><td>PO, PM y CTO de producto</td></tr>
     <tr><td><strong>Arranque</strong></td><td>Monta un proyecto nuevo desde cero: arquitectura, base de código, entornos, diseño base y calidad.</td><td>Jefatura de arranque</td></tr>
     <tr><td><strong>Desarrollo</strong></td><td>Diseña, programa, prueba y prepara despliegues.</td><td>CTO</td></tr>
+    <tr><td><strong>QA y testers</strong></td><td>Intentan romper la app (y lo demuestran con pruebas) y la usan como clientes simulados del negocio para ver dónde se atascan.</td><td>Jefatura de QA</td></tr>
     <tr><td><strong>Ciberseguridad</strong></td><td>Audita, prueba y protege: código, nube, datos y RGPD.</td><td>Responsable de seguridad</td></tr>
     <tr><td><strong>Marketing</strong></td><td>SEO, contenidos, redes sociales, SEO local y analítica.</td><td>Dirección de marketing</td></tr>
     <tr><td><strong>Soporte IT</strong></td><td>Infraestructura, sistemas, correo, redes e incidencias.</td><td>Jefatura de soporte IT</td></tr>
@@ -440,12 +441,13 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
 /plugin install producto@oficiososia
 /plugin install arranque@oficiososia
 /plugin install desarrollo@oficiososia
+/plugin install qa@oficiososia
 /plugin install seguridad@oficiososia
 /plugin install marketing@oficiososia
 /plugin install soporte@oficiososia
 /plugin install oficina@oficiososia</pre>
   <p>Cierra Claude Code (<span class="kbd">Ctrl</span>+<span class="kbd">C</span> dos veces) y vuelve a abrirlo con <span class="mono">claude</span>.</p>
-  <div class="caja ok"><p>Escribe <span class="mono">/</span> y deben salir, entre otros, <span class="mono">/producto:producto</span>, <span class="mono">/desarrollo:becarios</span>, <span class="mono">/seguridad:seguridad</span>, <span class="mono">/marketing:marketing</span> y <span class="mono">/soporte:soporte</span>.</p></div>
+  <div class="caja ok"><p>Escribe <span class="mono">/</span> y deben salir, entre otros, <span class="mono">/producto:producto</span>, <span class="mono">/desarrollo:becarios</span>, <span class="mono">/qa:qa</span>, <span class="mono">/seguridad:seguridad</span>, <span class="mono">/marketing:marketing</span> y <span class="mono">/soporte:soporte</span>.</p></div>
 
   <h3>8.3 · Notion en Claude Code</h3>
   <p>Si ya conectaste Notion en claude.ai (capítulo 4.2), Claude Code lo usa solo. Compruébalo escribiendo <span class="mono">/mcp</span>: debe salir Notion como conectado. Si no sale, conéctalo desde ahí.</p>
@@ -457,6 +459,7 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
     <tr><td><span class="mono">/producto:producto chat</span></td><td>Solo contesta el chat.</td></tr>
     <tr><td><span class="mono">/arranque:arranque &lt;URL&gt;</span></td><td>Monta la base de un proyecto nuevo (repositorio casi vacío).</td></tr>
     <tr><td><span class="mono">/desarrollo:becarios &lt;URL de la tarea&gt;</span></td><td>El equipo de desarrollo trabaja una tarea en tu ordenador, en la carpeta del proyecto.</td></tr>
+    <tr><td><span class="mono">/qa:qa &lt;URL&gt; [rápido|estándar|a fondo]</span></td><td>Prueba a fondo la app: testers que intentan romperla y usuarios simulados. Cada usuario simulado gasta de tu suscripción.</td></tr>
     <tr><td><span class="mono">/seguridad:seguridad &lt;URL&gt;</span></td><td>Auditoría de seguridad de una tarea.</td></tr>
     <tr><td><span class="mono">/marketing:marketing &lt;URL&gt;</span></td><td>Trabajo de marketing de una tarea.</td></tr>
     <tr><td><span class="mono">/soporte:soporte &lt;URL&gt;</span></td><td>Diagnóstico de una incidencia.</td></tr>
@@ -514,7 +517,7 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
 <!-- ANEXO A -->
 <section class="capitulo salto compacto">
   <h2><span class="num">A</span>Los becarios</h2>
-  <p>35 becarios en 5 departamentos, más el equipo de producto. La <strong>entrada</strong> de cada departamento (en negrita) recibe las tareas, hace el plan y reparte.</p>
+  <p>43 becarios en 6 departamentos, más el equipo de producto. La <strong>entrada</strong> de cada departamento (en negrita) recibe las tareas, hace el plan y reparte.</p>
   <div class="dos">
     <div>
       <h3>Arranque <span class="etq">proyectos nuevos</span></h3>
@@ -539,6 +542,17 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
         <li>QA funcional · recorridos y criterios de aceptación</li>
         <li>QA técnico · integración, API y regresión</li>
         <li>Delivery · despliegues y registro en Notion</li>
+      </ul>
+      <h3>QA y testers</h3>
+      <ul>
+        <li><strong>Jefatura de QA</strong> · modelo de la app, cobertura y veredicto</li>
+        <li>Reconocimiento · mapa de rutas, formularios, API y roles</li>
+        <li>Rompedor · casos extremos y lógica de negocio</li>
+        <li>API y permisos · contratos y acceso entre usuarios</li>
+        <li>Verificador · cada fallo, con una prueba que lo reproduce</li>
+        <li>Población simulada · clientes inventados del negocio</li>
+        <li>Enjambre de usuarios · los simula usando la app</li>
+        <li>Analista de la simulación · fricciones y qué arreglar</li>
       </ul>
     </div>
     <div>
@@ -582,6 +596,7 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxxxxxxxxx</pre>
     <tr><th>Departamento</th><th>Fases en Notion</th></tr>
     <tr><td>Arranque</td><td>Preparación → Cimientos → PR y revisión</td></tr>
     <tr><td>Desarrollo</td><td>Preparación → Desarrollo y unitarias → Despliegue DEMO → QA DEMO → PR y revisión (→ Despliegue PROD → QA PROD, siempre a mano)</td></tr>
+    <tr><td>QA y testers</td><td>Preparación → Pruebas → PR y revisión</td></tr>
     <tr><td>Ciberseguridad</td><td>Preparación → Auditoría → PR y revisión</td></tr>
     <tr><td>Marketing</td><td>Preparación → Producción → PR y revisión</td></tr>
     <tr><td>Soporte IT</td><td>Preparación → Intervención → PR y revisión</td></tr>

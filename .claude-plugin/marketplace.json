@@ -5,8 +5,8 @@
     "url": "https://github.com/oficiososia"
   },
   "metadata": {
-    "description": "Todos los becarios de OficiosOsIA: producto, arranque de proyectos, desarrollo, ciberseguridad, marketing, soporte IT y la oficina en la nube que ejecuta las tareas del panel hasta el PR.",
-    "version": "0.3.0"
+    "description": "Todos los becarios de OficiosOsIA: producto, arranque de proyectos, desarrollo, QA y testers, ciberseguridad, marketing, soporte IT y la oficina en la nube que ejecuta las tareas del panel hasta el PR.",
+    "version": "0.4.0"
   },
   "plugins": [
     {
@@ -23,6 +23,11 @@
       "name": "desarrollo",
       "source": "./plugins/desarrollo",
       "description": "Departamento de desarrollo: CTO, diseño UX/UI, frontend, backend de datos y de servicios, IA y automatizaciones, QA funcional y técnico, y delivery."
+    },
+    {
+      "name": "qa",
+      "source": "./plugins/qa",
+      "description": "Departamento de QA y testers: Jefatura de QA, reconocimiento, rompedor, API y permisos y verificador, que demuestran cada fallo con una prueba automática; y población simulada, enjambre de usuarios y analista, que simulan a los clientes del negocio usando la app y predicen dónde se atascan."
     },
     {
       "name": "seguridad",

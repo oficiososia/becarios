@@ -1,12 +1,13 @@
 # Becarios de OficiosOsIA
 
-Todos los becarios de OficiosOsIA: agentes de IA para Claude Code que trabajan en los proyectos de los clientes. Es un *marketplace* de siete plugins:
+Todos los becarios de OficiosOsIA: agentes de IA para Claude Code que trabajan en los proyectos de los clientes. Es un *marketplace* de ocho plugins:
 
 | Plugin | Qué trae | Entrada |
 | --- | --- | --- |
 | `producto` | Product Owner, Project Manager y CTO de producto. Convierten las peticiones del panel en tareas de Notion y contestan el chat. Skill `/producto:producto`. | — |
 | `arranque` | El equipo de desarrollo completo para proyectos que empiezan desde cero: Jefatura de arranque, análisis y alcance, plataforma y DevOps, sistema de diseño, frontend base, backend base, calidad y documentación. Skill `/arranque:arranque`. | `ar-lead` |
 | `desarrollo` | CTO, diseño UX/UI, frontend, backend de datos y de servicios, IA y automatizaciones, QA funcional, QA técnico y delivery. Skill `/desarrollo:becarios`. | `cto` |
+| `qa` | QA y testers en dos escuadras. **Testers**: Jefatura de QA, reconocimiento, rompedor, API y permisos y verificador, que demuestra cada fallo con una prueba automática. **Usuarios simulados**: población simulada, enjambre de usuarios y analista, que simulan a los clientes del negocio usando la app y predicen dónde se atascan. Skill `/qa:qa`. | `qa-lead` |
 | `seguridad` | Responsable de seguridad y cinco especialistas: aplicaciones, nube y datos, pentesting, dependencias y secretos, y cumplimiento y privacidad. Skill `/seguridad:seguridad`. | `sec-lead` |
 | `marketing` | Dirección de marketing, SEO técnico, contenidos, redes sociales, SEO local y analítica. Skill `/marketing:marketing`. | `mk-lead` |
 | `soporte` | Jefatura de soporte IT y cinco especialistas: soporte a usuarios, infraestructura, sistemas, comunicaciones y conectividad. Skill `/soporte:soporte`. | `it-lead` |
@@ -21,6 +22,7 @@ plugins/
 ├── producto/    agents/ (3) · skills/producto/
 ├── arranque/    agents/ (8) · skills/arranque/
 ├── desarrollo/  agents/ (9) · skills/becarios/ · reference/
+├── qa/          agents/ (8) · skills/qa/
 ├── seguridad/   agents/ (6) · skills/seguridad/
 ├── marketing/   agents/ (6) · skills/marketing/
 ├── soporte/     agents/ (6) · skills/soporte/
@@ -36,6 +38,7 @@ En Claude Code:
 /plugin install producto@oficiososia
 /plugin install arranque@oficiososia
 /plugin install desarrollo@oficiososia
+/plugin install qa@oficiososia
 /plugin install seguridad@oficiososia
 /plugin install marketing@oficiososia
 /plugin install soporte@oficiososia
@@ -47,6 +50,7 @@ Después:
 - `/producto:producto` (desde cualquier carpeta): contesta el chat del panel y convierte las peticiones pendientes en tareas de Notion, cuando dices «sí». También `/producto:producto chat` o `/producto:producto <URL de una petición>`.
 - `/arranque:arranque <URL de la tarea de Notion>`, en la copia del repositorio recién creado: la Jefatura de arranque elige el stack y planifica, el equipo monta los cimientos (plataforma y CI, sistema de diseño, frontend y backend base, calidad, documentación), la Jefatura revisa y, cuando dices «sí», PR con todo el esqueleto y el backlog del MVP como tareas nuevas en Notion.
 - `/desarrollo:becarios <URL de la tarea de Notion>`, en la copia del repositorio del proyecto (sin URL, coge la siguiente tarea del CTO): plan del CTO, diseño, desarrollo con pruebas, DEMO en la preview, QA, revisión y, cuando dices «sí», PR. A producción, solo si lo pides después de fusionar.
+- `/qa:qa <URL de la tarea de Notion> [rápido|estándar|a fondo] [solo-rompedores|solo-usuarios]`, en la copia del repositorio: la Jefatura de QA fija modo y alcance, Reconocimiento saca el mapa de la app, los testers intentan romperla y el verificador deja cada fallo confirmado como prueba en `tests/qa/`; los usuarios simulados del negocio usan la app en la preview por rondas y el analista escribe el informe de predicción. Veredicto APTO, APTO CON RIESGOS o NO APTO y, cuando dices «sí», PR con las pruebas y el informe y una subtarea por fallo. Cada usuario simulado gasta de tu suscripción: rápido 3 × 1, estándar 6 × 2, a fondo como mucho 12 × 4 (personas × rondas).
 - `/seguridad:seguridad <URL de la tarea de Notion>`: modelo de amenazas y alcance del responsable de seguridad, auditoría de los especialistas, veredicto y, cuando dices «sí», PR con los arreglos probados y una subtarea por cada hallazgo pendiente.
 - `/marketing:marketing <URL de la tarea de Notion>`: plan de la dirección, producción, revisión y, cuando dices «sí», PR.
 - `/soporte:soporte <URL de la tarea de Notion>`: diagnóstico de la jefatura, intervención de los especialistas, veredicto y, cuando dices «sí», PR con el informe y lo pendiente de una persona.
@@ -71,7 +75,7 @@ Desde el panel de OficiosOsIA asignas una tarea a un departamento de una oficina
 1. El panel manda el encargo (`ENCARGO OFICIOSOSIA v1`: la tarea de Notion, el departamento, el equipo y quién la lanza).
 2. La tarea programada abre una sesión en la nube con el repositorio del proyecto, clona este repositorio en `~/becarios` y sigue [`plugins/oficina/skills/encargo/SKILL.md`](plugins/oficina/skills/encargo/SKILL.md).
 3. El departamento trabaja la tarea en una rama `claude/<departamento>-<slug>` y abre el PR. Vercel crea la preview del PR, que hace de DEMO.
-4. La tarea de Notion queda en `PR y revisión`, `En espera`, con el enlace del PR. En arranque, el backlog del MVP se crea como tareas nuevas en Inbox. Los hallazgos de seguridad que no se arreglan en el PR, como subtareas (con los detalles solo en Notion si el repositorio es público). En soporte, lo que exige entrar en una cuenta (DNS, dominio, correo, router) queda como «Pendiente de una persona», con los pasos exactos.
+4. La tarea de Notion queda en `PR y revisión`, `En espera`, con el enlace del PR. En arranque, el backlog del MVP se crea como tareas nuevas en Inbox. En QA, cada fallo confirmado queda como prueba de regresión en el PR y como subtarea para desarrollo. Los hallazgos de seguridad que no se arreglan en el PR, como subtareas (con los detalles solo en Notion si el repositorio es público). En soporte, lo que exige entrar en una cuenta (DNS, dominio, correo, router) queda como «Pendiente de una persona», con los pasos exactos.
 5. Tú revisas el PR y lo fusionas. La sesión de la nube nunca fusiona, nunca despliega a producción y nunca escribe en bases de datos de producción.
 
 Puedes seguir la sesión en directo, o contestar si se queda esperando, desde [claude.ai/code](https://claude.ai/code) o la app de Claude: el panel enseña su enlace.
@@ -153,7 +157,17 @@ Si generas un token nuevo, el anterior deja de valer: vuelve a pegarlo en el pan
 - Crear repositorios, cuentas, proyectos de Vercel o Supabase, dominios o cualquier cosa que se pague.
 - Cambiar variables de entorno de producción, dominios o DNS, ni tocar routers, buzones de correo o cuentas de usuario.
 - Pedir o escribir contraseñas, o ejecutar comandos destructivos.
+- Probar con datos o cuentas de personas reales: QA usa usuarios de prueba y perfiles simulados inventados.
 - Hacer pruebas de seguridad fuera del alcance: solo el repositorio, el build local, la preview y la DEMO del proyecto; producción, solo con una URL autorizada por escrito en la tarea; nunca terceros, denegación de servicio, fuerza bruta ni ingeniería social.
 - Publicar en un repositorio público los detalles explotables de un fallo: van solo en Notion.
 - Publicar en redes sociales o tocar cuentas de anuncios, de Google Business Profile o de analítica.
 - Escribir secretos en el código, en Notion o en el PR.
+
+## Créditos e inspiración
+
+El departamento de QA y testers se inspira en la forma de trabajar de dos proyectos libres:
+
+- [Strix](https://github.com/usestrix/strix) (Apache-2.0): un agente que coordina sin probar, un modelo compartido de la app que el equipo corrige con enmiendas, una tabla de cobertura que se reconcilia antes de terminar y la regla de que no hay hallazgo sin una prueba que lo demuestre.
+- [MiroFish](https://github.com/666ghj/MiroFish) (AGPL-3.0): de una semilla a un mapa del negocio, de ahí a perfiles simulados con memoria, simulación por rondas y un informe planificado por secciones con entrevistas a los perfiles.
+
+Aquí no hay código ni prompts copiados de ninguno de los dos: solo la idea del método, escrita de nuevo para Claude Code. No hace falta instalar Strix ni MiroFish, ni sus claves de API de modelos, ni Zep: todo corre con la suscripción de Claude de quien lanza la tarea.
